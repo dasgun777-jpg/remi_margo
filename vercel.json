@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/Index.html",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/Index",
+      "destination": "/index.html"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "margo-portal",
+  "version": "1.0.0",
+  "description": "Корпоративный портал аналитики и потребностей РЕМИ",
+  "type": "module",
+  "scripts": {
+    "start": "serve ."
+  }
+}
