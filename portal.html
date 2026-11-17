@@ -1,0 +1,1721 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark" class="is-authenticated">
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="theme-color" content="#f5f5f7" id="meta-theme-color">
+  <meta name="color-scheme" content="dark light">
+  <title>Корпоративный портал РЕМИ</title>
+  
+  <!-- Фавикон: фото Маргариты -->
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/favicon.png">
+  
+  <!-- Мгновенное применение темы Apple (Zero-FOUC) -->
+  <script>
+    (function() {
+      try {
+        var savedTheme = localStorage.getItem('remi_theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = savedTheme || (prefersDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+        var meta = document.getElementById('meta-theme-color');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0a0a0e' : '#f5f5f7');
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- Google Identity Services (Sign in with Google) -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <!-- Системный шрифт Apple SF Pro & Inter (неблокирующая загрузка) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  
+  <link href="/vendor/bootstrap.min.css" rel="stylesheet">
+  <link href="/vendor/dataTables.bootstrap5.min.css" rel="stylesheet">
+  <link href="/vendor/responsive.bootstrap5.min.css" rel="stylesheet">
+  <link href="/vendor/virtual-select.min.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/portal.css">
+</head>
+<body class="is-authenticated">
+<!-- USER_INJECTION_POINT -->
+<!-- ЭКРАН ВХОДА ЧЕРЕЗ GOOGLE (APPLE LIQUID GLASS AUTH OVERLAY) -->
+
+
+<div id="portal-config" data-special="<?= showSpecialTab ?>" style="display:none;"></div>
+
+<div class="container-fluid">
+  
+  <!-- ШАПКА ПОРТАЛА (APPLE LIQUID GLASS NAVBAR) -->
+  <div class="app-header-bar d-flex flex-wrap align-items-center justify-content-between gap-2 gap-md-3">
+    <div class="d-flex align-items-center gap-3 header-brand-group">
+      <div class="brand-logo-pill">РЕМИ</div>
+      <div style="min-width: 0;">
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+          <h1 class="brand-title">Корпоративный портал</h1>
+          <span class="status-live-indicator">
+            <span class="status-dot-pulse"></span> Онлайн
+          </span>
+        </div>
+        <span class="brand-subtitle d-block">Мониторинг потребностей, смен и тарифов линейного персонала</span>
+      </div>
+    </div>
+    
+    <div class="header-controls-bar">
+      <div class="header-utility-buttons">
+        <!-- ТАКТИЛЬНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ APPLE (CUPERTINO SWITCH) -->
+        <button class="ios-theme-toggle" id="btn-theme-toggle" type="button" title="Переключить тему (Светлая / Тёмная)">
+          <div class="ios-toggle-track">
+            <span class="ios-toggle-icon">☀️</span>
+            <span class="ios-toggle-icon">🌙</span>
+            <div class="ios-toggle-thumb"></div>
+          </div>
+        </button>
+
+        <!-- КНОПКА ОБНОВЛЕНИЯ ДАННЫХ -->
+        <button class="btn-refresh-app" id="btn-refresh-all" title="Обновить все таблицы и сверки">
+          <span id="refresh-icon">🔄</span> <span id="refresh-text">Обновить</span>
+        </button>
+
+        <!-- КНОПКА СБРОСА ШИРИНЫ КОЛОНОК -->
+        <button class="btn-reset-widths" id="btn-reset-col-widths" type="button" title="Сбросить ширину столбцов к стандартной">
+          <span id="reset-col-icon">↔️</span> <span id="reset-col-text" class="d-none d-sm-inline">Сброс ширины</span>
+        </button>
+
+        <!-- ЧЕКБОКС РАЗРЕШЕНИЯ ИЗМЕНЕНИЯ ШИРИНЫ КОЛОНОК -->
+        <label class="btn-toggle-col-resize" id="toggle-col-resize-label" title="Разрешить изменение ширины столбцов перетаскиванием">
+          <input type="checkbox" id="chk-allow-col-resize">
+          <span class="d-none d-sm-inline">Изм. ширины</span>
+          <span class="d-inline d-sm-none">Ширина</span>
+        </label>
+
+        <!-- ПРОФИЛЬ АВТОРИЗОВАННОГО ПОЛЬЗОВАТЕЛЯ GOOGLE -->
+        <div class="portal-user-profile" id="portal-user-profile" style="display: none;">
+          <img id="user-avatar-img" class="user-avatar" src="" alt="Avatar" style="display: none;">
+          <div class="user-initials" id="user-avatar-initials">Р</div>
+          <div class="user-info-text">
+            <span class="user-name" id="user-display-name">Сотрудник</span>
+            <span class="user-role-badge" id="user-display-role">Роль</span>
+          </div>
+          <button class="btn-user-logout" id="btn-user-logout" type="button" title="Выйти из аккаунта">
+            <span>Выйти</span>
+          </button>
+        </div>
+
+        <!-- КНОПКА АВТОРИЗАЦИИ / СПЕЦРЕЖИМА (РЕЗЕРВНАЯ) -->
+        <button class="btn btn-sm btn-outline-secondary btn-portal-auth" id="btn-portal-auth" type="button" title="Управление доступом к закрытым вкладкам" style="display: none;">
+          <span id="portal-auth-icon">🔒</span> <span id="portal-auth-text">Войти</span>
+        </button>
+      </div>
+
+      <!-- СЕГМЕНТИРОВАННЫЙ ПЕРЕКЛЮЧАТЕЛЬ ТАБОВ -->
+      <ul class="nav nav-segmented" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="pills-needs-tab" data-bs-toggle="pill" data-bs-target="#pills-needs" type="button" role="tab">Потребности</button>
+        </li>
+        <!-- SHIFT_NAV_START -->
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-shift-tab" data-bs-toggle="pill" data-bs-target="#pills-shift" type="button" role="tab">1 Смена</button>
+        </li>
+        <!-- SHIFT_NAV_END -->
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-tariffs-tab" data-bs-toggle="pill" data-bs-target="#pills-tariffs" type="button" role="tab">Тарифы</button>
+        </li>
+        
+        <!-- SPECIAL_START -->
+        <li class="nav-item special-only" role="presentation">
+          <button class="nav-link tab-special-badge" id="pills-cards-tab" data-bs-toggle="pill" data-bs-target="#pills-cards" type="button" role="tab">📱 Задачи</button>
+        </li>
+        <li class="nav-item special-only" role="presentation">
+          <button class="nav-link tab-special-badge" id="pills-special-tab" data-bs-toggle="pill" data-bs-target="#pills-special" type="button" role="tab">🔒 Сверка</button>
+        </li>
+        <li class="nav-item special-only" role="presentation">
+          <button class="nav-link tab-special-badge" id="pills-analysis-tab" data-bs-toggle="pill" data-bs-target="#pills-analysis" type="button" role="tab">📊 Анализ</button>
+        </li>
+        <li class="nav-item special-only" role="presentation">
+          <button class="nav-link tab-special-badge" id="pills-security-tab" data-bs-toggle="pill" data-bs-target="#pills-security" type="button" role="tab">🛡️ Доступы</button>
+        </li>
+        <!-- SPECIAL_END -->
+      </ul>
+    </div>
+  </div>
+
+  <!-- ГЛАВНАЯ КАРТОЧКА С КОНТЕНТОМ (LIQUID GLASS PANEL) -->
+  <div class="card-main">
+    <div class="tab-content" id="pills-tabContent">
+      
+      <!-- ============================================== -->
+      <!-- РАЗДЕЛ 1: ПОТРЕБНОСТИ                          -->
+      <!-- ============================================== -->
+      <div class="tab-pane fade show active" id="pills-needs" role="tabpanel">
+        <div id="loader-needs" class="loader-container">
+          <div class="spinner-border loader-spinner mb-2" role="status"></div>
+          <div class="loader-text">Синхронизация листа «Потребности»...</div>
+        </div>
+        
+        <div id="content-needs" style="display: none;">
+          <div class="filters-wrapper">
+            <div class="row g-2">
+              <div class="col-md-3 col-sm-6"><div class="filter-label">Номер ТК</div><div id="filter-store"></div></div>
+              <div class="col-md-3 col-sm-6"><div class="filter-label">Город</div><div id="filter-city"></div></div>
+              <div class="col-md-3 col-sm-6"><div class="filter-label">Должность</div><div id="filter-position"></div></div>
+              <div class="col-md-3 col-sm-6"><div class="filter-label">Статус актуальности</div><div id="filter-status"></div></div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table id="tableNeeds" class="table table-hover table-bordered align-middle dt-responsive">
+              <thead id="head-needs"></thead><tbody id="body-needs"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================== -->
+      <!-- РАЗДЕЛ 2: 1 СМЕНА                              -->
+      <!-- ============================================== -->
+      <!-- SHIFT_PANE_START -->
+        <div class="tab-pane fade" id="pills-shift" role="tabpanel">
+        <div id="loader-shift" class="loader-container">
+          <div class="spinner-border loader-spinner mb-2" role="status"></div>
+          <div class="loader-text">Загрузка записей кандидатов на 1 смену...</div>
+        </div>
+        
+        <div id="content-shift" style="display: none;">
+          <div class="mb-3 d-flex flex-wrap align-items-center justify-content-between gap-2">
+            <button class="btn-analytics-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#collapseShiftStats" aria-expanded="false">
+              <span>📊 Аналитика команд (HR / ПМ / РЕК / С / ВАУ)</span>
+              <span class="badge-ios-pill" id="badge-total-shift-count">0</span>
+              <small style="opacity: 0.8;">▼</small>
+            </button>
+            <div class="shift-markers-hint">
+              <span>💡 Маркеры сверки:</span>
+              <span>🟢 тел. + ФИО</span>
+              <span style="opacity:0.4;">|</span>
+              <span>🔵 по тел.</span>
+              <span style="opacity:0.4;">|</span>
+              <span>🟣 по ФИО</span>
+            </div>
+          </div>
+
+          <div class="collapse" id="collapseShiftStats">
+            <div class="stats-card-box">
+              <div class="row g-2 text-center" id="shift-stats-container"></div>
+            </div>
+          </div>
+
+          <div class="filters-wrapper">
+            <div class="row g-2 align-items-end">
+              <div class="col-lg-3 col-md-6 col-6"><div class="filter-label">Номер ТК</div><div id="filter-s-store"></div></div>
+              <div class="col-lg-3 col-md-6 col-6"><div class="filter-label">Город</div><div id="filter-s-city"></div></div>
+              <div class="col-lg-3 col-md-6 col-6"><div class="filter-label">Должность</div><div id="filter-s-position"></div></div>
+              <div class="col-lg-3 col-md-6 col-6"><div class="filter-label">Команда</div><div id="filter-s-team"></div></div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                <div class="filter-label">Сверка смен</div>
+                <select id="filter-s-worked" class="form-select form-select-sm input-compact" style="cursor: pointer;">
+                  <option value="all">Все (статус)</option>
+                  <option value="worked">✅ Отработал (все)</option>
+                  <option value="worked_both">✅ Тел. + ФИО</option>
+                  <option value="worked_phone">📱 По телефону</option>
+                  <option value="worked_fio">👤 По ФИО</option>
+                  <option value="not_worked">❌ Не отработал</option>
+                </select>
+              </div>
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                <div class="filter-label">Уникальность</div>
+                <label class="shift-unique-pill w-100" for="shift-unique-phone">
+                  <input class="form-check-input" type="checkbox" id="shift-unique-phone">
+                  <span style="font-size: 0.82rem; font-weight: 600; color: var(--ios-text);">Без дублей (тел.)</span>
+                </label>
+              </div>
+              <div class="col-lg-6 col-md-4 col-12">
+                <div class="filter-label">Дата прихода (От и До)</div>
+                <div class="d-flex gap-1 align-items-center">
+                  <input type="date" id="filter-s-date-from" class="form-control form-control-sm input-compact" title="Дата от">
+                  <span class="text-muted">—</span>
+                  <input type="date" id="filter-s-date-to" class="form-control form-control-sm input-compact" title="Дата до">
+                  <button class="btn btn-sm btn-outline-secondary btn-compact" id="clear-s-dates" title="Сбросить даты">✕</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table id="tableShift" class="table table-hover table-bordered align-middle dt-responsive">
+              <thead id="head-shift"></thead><tbody id="body-shift"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================== -->
+      <!-- РАЗДЕЛ 3: ТАРИФЫ                               -->
+      <!-- ============================================== -->
+      <!-- SHIFT_PANE_END -->
+
+        <div class="tab-pane fade" id="pills-tariffs" role="tabpanel">
+        <div id="loader-tariffs" class="loader-container">
+          <div class="spinner-border loader-spinner mb-2" role="status"></div>
+          <div class="loader-text">Загрузка тарифной сетки...</div>
+        </div>
+        
+        <div id="content-tariffs" style="display: none;">
+          <div class="filters-wrapper">
+            <div class="row g-2">
+              <div class="col-md-3 col-sm-6"><div class="filter-label">Город</div><div id="filter-t-city"></div></div>
+              <div class="col-md-2 col-sm-6"><div class="filter-label">Регион / Край</div><div id="filter-t-region"></div></div>
+              <div class="col-md-3 col-sm-6"><div class="filter-label">Базовая услуга</div><div id="filter-t-service"></div></div>
+              <div class="col-md-2 col-sm-6"><div class="filter-label">Должность</div><div id="filter-t-position"></div></div>
+              <div class="col-md-2 col-sm-12">
+                <div class="filter-label">Уровень ставки:</div>
+                <select id="levelToggle" class="form-select form-select-sm input-compact" style="cursor: pointer;">
+                  <option value="all">Показать все</option>
+                  <option value="1">1 уровень</option>
+                  <option value="2">2 уровень</option>
+                  <option value="3">3 уровень</option>
+                  <option value="4">4 уровень</option>
+                  <option value="5">5 уровень</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table id="tableTariffs" class="table table-hover table-bordered align-middle">
+              <thead id="head-tariffs"></thead><tbody id="body-tariffs"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SPECIAL_START -->
+      <!-- ============================================== -->
+      <!-- РАЗДЕЛ: ЗАДАЧИ / КАРТОЧКИ (МОБИЛЬНЫЙ ФОРМАТ)   -->
+      <!-- ============================================== -->
+      <div class="tab-pane fade special-only" id="pills-cards" role="tabpanel">
+        <!-- ПАНЕЛЬ УПРАВЛЕНИЯ КАРТОЧКАМИ -->
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <span class="badge-access-key">📱 Мобильный режим задач</span>
+            <span class="badge bg-secondary rounded-pill d-inline-flex align-items-center" id="cards-count-badge" style="font-size: 0.78rem; font-weight: 600; min-height: 30px; padding: 4px 11px;">0 задач</span>
+            <span class="badge rounded-pill d-inline-flex align-items-center" id="cards-selected-badge" style="display: none; min-height: 30px; padding: 4px 11px;">Выбрано: 0</span>
+          </div>
+          <div class="d-flex align-items-center gap-2 flex-wrap cards-actions-bar">
+            <!-- КНОПКА ВЫДЕЛИТЬ ВСЕ -->
+            <button class="btn-copy-all" id="btn-cards-select-all" type="button" title="Выделить все отфильтрованные задачи">
+              <span>☑️</span> <span>Выделить всё</span>
+            </button>
+            <!-- КНОПКА СНЯТЬ ВСЕ -->
+            <button class="btn-copy-all" id="btn-cards-deselect-all" type="button" title="Снять выделение со всех задач">
+              <span>⬜</span> <span>Снять всё</span>
+            </button>
+            <!-- КНОПКА СКОПИРОВАТЬ ВЫБРАННОЕ -->
+            <button class="btn-copy-all" id="btn-cards-copy-all" type="button" title="Скопировать выбранные задачи со стикерами для мессенджера">
+              <span>📋</span> <span id="btn-cards-copy-label">Скопировать всё</span>
+            </button>
+            <!-- КНОПКА ЭКСПОРТА ВСЕХ ОТФИЛЬТРОВАННЫХ В PDF -->
+            <button class="btn-export-pdf" id="btn-cards-export-pdf" type="button" title="Сохранить выбранные задачи в PDF">
+              <span>📄</span> <span>Сохранить в PDF</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ФИЛЬТРЫ ДЛЯ КАРТОЧЕК -->
+        <div class="filters-wrapper mb-3" id="cards-filters-box">
+          <div class="row g-2 align-items-end">
+            <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+              <div class="filter-label">Город</div>
+              <div id="filter-cards-city"></div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+              <div class="filter-label">Номер ТК</div>
+              <div id="filter-cards-store"></div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+              <div class="filter-label">Должность</div>
+              <div id="filter-cards-position"></div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+              <div class="filter-label">Уровень ЧТС</div>
+              <div id="filter-cards-level"></div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+              <div class="filter-label">Статус</div>
+              <div id="filter-cards-status"></div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+              <div class="filter-label">Сортировка</div>
+              <select id="select-cards-sort" class="select-cards-sort w-100">
+                <option value="default">По умолчанию</option>
+                <option value="date_desc">Дата изменения (сначала новые 📅)</option>
+                <option value="date_asc">Дата изменения (сначала старые 📅)</option>
+                <option value="level_asc">Уровень ЧТС (1 → 5)</option>
+                <option value="level_desc">Уровень ЧТС (5 → 1)</option>
+                <option value="rate_desc">Ставка (сначала высокие)</option>
+                <option value="rate_asc">Ставка (сначала низкие)</option>
+                <option value="priority">Срочные сначала 🔥</option>
+                <option value="store">По номеру ТК</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- ПРЕЛОАДЕР КАРТОЧЕК -->
+        <div id="loader-cards" class="loader-container">
+          <div class="spinner-border loader-spinner mb-2" role="status"></div>
+          <div class="loader-text">Формирование карточек задач...</div>
+        </div>
+
+        <!-- СЕТКА КАРТОЧЕК -->
+        <div id="cards-grid" class="cards-grid-container" style="display: none;">
+          <!-- Карточки генерируются динамически через JS -->
+        </div>
+
+        <!-- ПУСТОЙ РЕЗУЛЬТАТ -->
+        <div id="cards-empty-state" class="text-center py-5" style="display: none;">
+          <div style="font-size: 3rem; margin-bottom: 8px;">🔍</div>
+          <div class="fw-bold" style="color: var(--ios-text); font-size: 1.1rem;">Задачи не найдены</div>
+          <div class="text-muted" style="font-size: 0.85rem;">Попробуйте изменить параметры фильтров выше</div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade special-only" id="pills-analysis" role="tabpanel">
+        
+        <!-- ПАНЕЛЬ УПРАВЛЕНИЯ И КАТЕГОРИИ АНАЛИТИКИ -->
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+          <div class="analysis-nav-pills d-flex gap-2 flex-wrap mb-0">
+            <button type="button" class="btn btn-sm btn-remi-pill active" data-analysis-cat="all">⚡ Все разделы</button>
+            <button type="button" class="btn btn-sm btn-remi-pill" data-analysis-cat="needs">📋 Потребности и дефицит</button>
+            <button type="button" class="btn btn-sm btn-remi-pill" data-analysis-cat="shift">👥 1 Смена и рекрутинг</button>
+            <button type="button" class="btn btn-sm btn-remi-pill" data-analysis-cat="reconcile">💰 Финансы и сверка</button>
+            <button type="button" class="btn btn-sm btn-remi-pill" data-analysis-cat="tariffs">🏷️ Тарифы и ставки</button>
+            <button type="button" class="btn btn-sm btn-remi-pill" data-analysis-cat="cross">🎯 План / Факт</button>
+            <button type="button" class="btn btn-sm btn-remi-pill" data-analysis-cat="builder">🛠️ Конструктор графиков</button>
+          </div>
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <button type="button" class="btn btn-sm btn-analysis-action" id="analysis-global-expand-all" title="Развернуть все карточки">
+              <span>▼</span> <span>Развернуть все</span>
+            </button>
+            <button type="button" class="btn btn-sm btn-analysis-action" id="analysis-global-collapse-all" title="Свернуть все карточки в заголовки">
+              <span>▲</span> <span>Свернуть все</span>
+            </button>
+            <button type="button" class="btn btn-sm btn-analysis-action" id="analysis-global-refresh" title="Обновить графики">
+              <span>🔄</span> <span>Обновить</span>
+            </button>
+          </div>
+        </div>
+        <div class="filters-wrapper py-2 px-3 mb-3">
+          <div class="d-flex align-items-center gap-2 flex-wrap analysis-extra-filters">
+            <div class="d-flex align-items-center gap-2 flex-grow-1 flex-sm-grow-0">
+              <span style="font-size: 0.76rem; color: var(--ios-text-secondary); font-weight: 700; text-transform: uppercase;">От:</span>
+              <input type="date" id="analysis-date-from" class="form-control input-compact" style="min-width: 135px;">
+            </div>
+            <div class="d-flex align-items-center gap-2 flex-grow-1 flex-sm-grow-0">
+              <span style="font-size: 0.76rem; color: var(--ios-text-secondary); font-weight: 700; text-transform: uppercase;">До:</span>
+              <input type="date" id="analysis-date-to" class="form-control input-compact" style="min-width: 135px;">
+            </div>
+            <label class="shift-unique-pill" for="analysis-unique-phone" style="height: 36px;">
+              <input class="form-check-input" type="checkbox" id="analysis-unique-phone" style="width: 15px; height: 15px;">
+              <span style="font-size: 0.8rem; font-weight: 600; color: var(--ios-text);">Без дублей (по тел.)</span>
+            </label>
+            <button type="button" class="btn btn-sm btn-outline-secondary btn-compact" id="analysis-clear-dates" title="Сбросить даты аналитики">Сбросить даты</button>
+          </div>
+        </div>
+
+        <!-- 1. ПОТРЕБНОСТИ -->
+        <div class="analysis-section-block" data-cat="needs">
+          <h2 class="analysis-section-title">📋 Потребности, торговые комплексы и кадровый дефицит</h2>
+          <div class="analysis-chart-grid">
+            
+            <!-- 1. Главный график: Сравнение городов (ТК vs Вакансии) -->
+            <section class="analysis-chart-panel" id="panel-needs-city-comparison" style="grid-column: 1 / -1;">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">Сравнение по городам: Магазины (ТК) vs Открытые вакансии (чел.)</h3>
+                  <span class="analysis-panel-badge">Сеть ТК vs открытые вакансии</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-data-toggle" data-chart="analysis-needs-city-comparison" title="Развернуть/свернуть список городов">
+                    <span class="toggle-icon">▼</span> <span class="toggle-text">Все города</span>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-needs-city-comparison" title="Во весь экран с детальной таблицей">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-needs-city-comparison" style="height: 320px;"><canvas id="analysis-needs-city-comparison"></canvas></div>
+                <div class="analysis-panel-footer">
+                  <button type="button" class="btn btn-sm btn-analysis-expand-btn" data-chart="analysis-needs-city-comparison">
+                    <span class="btn-text">▼ Развернуть все города</span>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- 2. Срочность по городам: Приоритеты 1–3 (Stacked Columns) -->
+            <section class="analysis-chart-panel" id="panel-needs-city-priority-stacked">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">Срочность по городам: Приоритеты 1–3</h3>
+                  <span class="analysis-panel-badge">Критические vs плановые</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-data-toggle" data-chart="analysis-needs-city-priority-stacked" title="Развернуть/свернуть города">
+                    <span class="toggle-icon">▼</span> <span class="toggle-text">Все города</span>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-needs-city-priority-stacked" title="Во весь экран">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-needs-city-priority-stacked" style="height: 300px;"><canvas id="analysis-needs-city-priority-stacked"></canvas></div>
+                <div class="analysis-panel-footer">
+                  <button type="button" class="btn btn-sm btn-analysis-expand-btn" data-chart="analysis-needs-city-priority-stacked">
+                    <span class="btn-text">▼ Развернуть все города</span>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- 3. Коэффициент нагрузки на 1 ТК -->
+            <section class="analysis-chart-panel" id="panel-needs-city-density">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">Индекс дефицита: вакансий на 1 ТК</h3>
+                  <span class="analysis-panel-badge">Нагрузка на 1 магазин</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-data-toggle" data-chart="analysis-needs-city-density" title="Развернуть/свернуть города">
+                    <span class="toggle-icon">▼</span> <span class="toggle-text">Все города</span>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-needs-city-density" title="Во весь экран">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-needs-city-density" style="height: 300px;"><canvas id="analysis-needs-city-density"></canvas></div>
+                <div class="analysis-panel-footer">
+                  <button type="button" class="btn btn-sm btn-analysis-expand-btn" data-chart="analysis-needs-city-density">
+                    <span class="btn-text">▼ Развернуть все города</span>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- 4. Анализ дефицита по форматам ТК -->
+            <section class="analysis-chart-panel" id="panel-needs-format">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">Дефицит по форматам ТК</h3>
+                  <span class="analysis-panel-badge">Гипер / Супер / Экспресс</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-needs-format" title="Во весь экран">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-needs-format" style="height: 300px;"><canvas id="analysis-needs-format"></canvas></div>
+              </div>
+            </section>
+
+            <!-- 5. Кластеризация магазинов по уровню риска дефицита -->
+            <section class="analysis-chart-panel" id="panel-needs-risk-cluster">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">Зоны риска магазинов (ТК сети)</h3>
+                  <span class="analysis-panel-badge">Красная / Желтая / Зеленая</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-needs-risk-cluster" title="Во весь экран">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-needs-risk-cluster" style="height: 300px;"><canvas id="analysis-needs-risk-cluster"></canvas></div>
+              </div>
+            </section>
+
+            <!-- 6. Покрытие дефицита рекрутингом (Потребность vs 1 Смена) -->
+            <section class="analysis-chart-panel" id="panel-needs-shift-balance">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">Покрытие дефицита: Заявки vs 1 Смена</h3>
+                  <span class="analysis-panel-badge">Рекрутинг vs потребность</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-data-toggle" data-chart="analysis-needs-shift-balance" title="Развернуть/свернуть города">
+                    <span class="toggle-icon">▼</span> <span class="toggle-text">Все города</span>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-needs-shift-balance" title="Во весь экран">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-needs-shift-balance" style="height: 300px;"><canvas id="analysis-needs-shift-balance"></canvas></div>
+                <div class="analysis-panel-footer">
+                  <button type="button" class="btn btn-sm btn-analysis-expand-btn" data-chart="analysis-needs-shift-balance">
+                    <span class="btn-text">▼ Развернуть все города</span>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- 7. Доля городов в общей потребности сети -->
+            <section class="analysis-chart-panel" id="panel-needs-city-share">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">Доля городов в общей потребности сети (%)</h3>
+                  <span class="analysis-panel-badge">Вклад в общий дефицит</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-needs-city-share" title="Во весь экран">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-needs-city-share" style="height: 300px;"><canvas id="analysis-needs-city-share"></canvas></div>
+              </div>
+            </section>
+
+            <!-- 8. Интерактивный срез должностей по выбранному городу -->
+            <section class="analysis-chart-panel" id="panel-needs-city-positions">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">Вакансии по должностям</h3>
+                  <select id="analysis-city-select" class="form-select form-select-sm input-compact" style="width: auto; max-width: 190px; height: 32px !important; font-size: 0.8rem !important; padding: 2px 28px 2px 10px !important; border-radius: 10px !important; cursor: pointer;">
+                    <option value="__all__">Все города</option>
+                  </select>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-data-toggle" data-chart="analysis-needs-city-positions" title="Развернуть/свернуть должности">
+                    <span class="toggle-icon">▼</span> <span class="toggle-text">Все должности</span>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-needs-city-positions" title="Во весь экран">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-needs-city-positions" style="height: 300px;"><canvas id="analysis-needs-city-positions"></canvas></div>
+                <div class="analysis-panel-footer">
+                  <button type="button" class="btn btn-sm btn-analysis-expand-btn" data-chart="analysis-needs-city-positions">
+                    <span class="btn-text">▼ Развернуть все должности</span>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- 9. ТОП дефицитных магазинов по сети -->
+            <section class="analysis-chart-panel" id="panel-needs-top-stores" style="grid-column: 1 / -1;">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">ТОП дефицитных магазинов (ТК) по сети</h3>
+                  <span class="analysis-panel-badge">Рейтинг торговых точек</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-data-toggle" data-chart="analysis-needs-top-stores" title="Развернуть/свернуть магазины">
+                    <span class="toggle-icon">▼</span> <span class="toggle-text">ТОП-30 ТК</span>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-needs-top-stores" title="Во весь экран с детальной таблицей">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-needs-top-stores" style="height: 320px;"><canvas id="analysis-needs-top-stores"></canvas></div>
+                <div class="analysis-panel-footer">
+                  <button type="button" class="btn btn-sm btn-analysis-expand-btn" data-chart="analysis-needs-top-stores">
+                    <span class="btn-text">▼ Развернуть ТОП-30 дефицитных магазинов</span>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+          </div>
+        </div>
+
+        <!-- 2. РЕКРУТИНГ И 1 СМЕНА -->
+        <div class="analysis-section-block" data-cat="shift">
+          <h2 class="analysis-section-title">👥 1 Смена и эффективность команд рекрутинга</h2>
+          <div class="analysis-chart-grid">
+            
+            <!-- 1. Воронка доходимости -->
+            <section class="analysis-chart-panel" id="panel-shift-conversion">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">Воронка доходимости: Записано vs Отработало</h3>
+                  <span class="analysis-panel-badge">Конверсия по командам</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-shift-conversion" title="Во весь экран">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-shift-conversion" style="height: 300px;"><canvas id="analysis-shift-conversion"></canvas></div>
+              </div>
+            </section>
+
+            <!-- 2. Записи по командам -->
+            <section class="analysis-chart-panel" id="panel-shift-team">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">Записи на 1 смену по командам</h3>
+                  <span class="analysis-panel-badge">Объем набора</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-shift-team" title="Во весь экран">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-shift-team" style="height: 300px;"><canvas id="analysis-shift-team"></canvas></div>
+              </div>
+            </section>
+
+            <!-- 3. География 1 смены: города -->
+            <section class="analysis-chart-panel" id="panel-shift-cities">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">География 1 смены: Записи по городам</h3>
+                  <span class="analysis-panel-badge">Города выхода новичков</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-data-toggle" data-chart="analysis-shift-cities" title="Развернуть/свернуть города">
+                    <span class="toggle-icon">▼</span> <span class="toggle-text">Все города</span>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-shift-cities" title="Во весь экран">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-shift-cities" style="height: 300px;"><canvas id="analysis-shift-cities"></canvas></div>
+                <div class="analysis-panel-footer">
+                  <button type="button" class="btn btn-sm btn-analysis-expand-btn" data-chart="analysis-shift-cities">
+                    <span class="btn-text">▼ Развернуть все города</span>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- 4. Динамика по дням недели -->
+            <section class="analysis-chart-panel" id="panel-shift-dayofweek">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">Динамика записей по дням недели</h3>
+                  <span class="analysis-panel-badge">Пн–Вс активность</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-shift-dayofweek" title="Во весь экран">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-shift-dayofweek" style="height: 300px;"><canvas id="analysis-shift-dayofweek"></canvas></div>
+              </div>
+            </section>
+
+            <!-- 5. ТОП магазинов по 1 смене -->
+            <section class="analysis-chart-panel" id="panel-shift-top-stores">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">ТОП магазинов (ТК) по приему новичков</h3>
+                  <span class="analysis-panel-badge">Направление на стажировку</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-data-toggle" data-chart="analysis-shift-top-stores" title="Развернуть/свернуть магазины">
+                    <span class="toggle-icon">▼</span> <span class="toggle-text">ТОП-25 ТК</span>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-shift-top-stores" title="Во весь экран">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-shift-top-stores" style="height: 300px;"><canvas id="analysis-shift-top-stores"></canvas></div>
+                <div class="analysis-panel-footer">
+                  <button type="button" class="btn btn-sm btn-analysis-expand-btn" data-chart="analysis-shift-top-stores">
+                    <span class="btn-text">▼ Развернуть ТОП-25 ТК</span>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+          </div>
+        </div>
+
+        <!-- 3. ФИНАНСЫ И СВЕРКА -->
+        <div class="analysis-section-block" data-cat="reconcile">
+          <h2 class="analysis-section-title">💰 Финансы, часы и отработка (Сверка день/неделя)</h2>
+          <div class="analysis-chart-grid">
+            
+            <!-- 1. Динамика ФОТ по датам -->
+            <section class="analysis-chart-panel" id="panel-reconcile-payout-dyn" style="grid-column: 1 / -1;">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">Динамика фонда оплаты (ФОТ) по датам</h3>
+                  <span class="analysis-panel-badge">Выплаты за смены (₽)</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-reconcile-payout-dyn" title="Во весь экран">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-reconcile-payout-dyn" style="height: 320px;"><canvas id="analysis-reconcile-payout-dyn"></canvas></div>
+              </div>
+            </section>
+
+            <!-- 2. ФОТ по городам сети -->
+            <section class="analysis-chart-panel" id="panel-reconcile-city-payout">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">Затраты на персонал по городам (₽)</h3>
+                  <span class="analysis-panel-badge">ФОТ по городам</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-data-toggle" data-chart="analysis-reconcile-city-payout" title="Развернуть/свернуть города">
+                    <span class="toggle-icon">▼</span> <span class="toggle-text">Все города</span>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-reconcile-city-payout" title="Во весь экран">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-reconcile-city-payout" style="height: 300px;"><canvas id="analysis-reconcile-city-payout"></canvas></div>
+                <div class="analysis-panel-footer">
+                  <button type="button" class="btn btn-sm btn-analysis-expand-btn" data-chart="analysis-reconcile-city-payout">
+                    <span class="btn-text">▼ Развернуть все города</span>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- 3. Отработано часов по городам -->
+            <section class="analysis-chart-panel" id="panel-reconcile-city-hours">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">Отработано часов по городам</h3>
+                  <span class="analysis-panel-badge">Человеко-часы</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-data-toggle" data-chart="analysis-reconcile-city-hours" title="Развернуть/свернуть города">
+                    <span class="toggle-icon">▼</span> <span class="toggle-text">Все города</span>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-reconcile-city-hours" title="Во весь экран">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-reconcile-city-hours" style="height: 300px;"><canvas id="analysis-reconcile-city-hours"></canvas></div>
+                <div class="analysis-panel-footer">
+                  <button type="button" class="btn btn-sm btn-analysis-expand-btn" data-chart="analysis-reconcile-city-hours">
+                    <span class="btn-text">▼ Развернуть все города</span>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- 4. Часы по специальностям -->
+            <section class="analysis-chart-panel" id="panel-reconcile-spec-hours">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">Часы по специальностям</h3>
+                  <span class="analysis-panel-badge">Выработка персонала</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-data-toggle" data-chart="analysis-reconcile-spec-hours" title="Развернуть/свернуть специальности">
+                    <span class="toggle-icon">▼</span> <span class="toggle-text">Все</span>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-reconcile-spec-hours" title="Во весь экран">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-reconcile-spec-hours" style="height: 300px;"><canvas id="analysis-reconcile-spec-hours"></canvas></div>
+                <div class="analysis-panel-footer">
+                  <button type="button" class="btn btn-sm btn-analysis-expand-btn" data-chart="analysis-reconcile-spec-hours">
+                    <span class="btn-text">▼ Развернуть все специальности</span>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- 5. ТОП магазинов по выплатам -->
+            <section class="analysis-chart-panel" id="panel-reconcile-top-stores">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">ТОП магазинов (ТК) по выплатам (₽)</h3>
+                  <span class="analysis-panel-badge">Затраты на магазин</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-data-toggle" data-chart="analysis-reconcile-top-stores" title="Развернуть/свернуть магазины">
+                    <span class="toggle-icon">▼</span> <span class="toggle-text">ТОП-25 ТК</span>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-reconcile-top-stores" title="Во весь экран">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-reconcile-top-stores" style="height: 300px;"><canvas id="analysis-reconcile-top-stores"></canvas></div>
+                <div class="analysis-panel-footer">
+                  <button type="button" class="btn btn-sm btn-analysis-expand-btn" data-chart="analysis-reconcile-top-stores">
+                    <span class="btn-text">▼ Развернуть ТОП-25 ТК</span>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- 6. Структура исполнителей -->
+            <section class="analysis-chart-panel" id="panel-reconcile-type">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">Структура исполнителей</h3>
+                  <span class="analysis-panel-badge">Тип оформления</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-reconcile-type" title="Во весь экран">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-reconcile-type" style="height: 300px;"><canvas id="analysis-reconcile-type"></canvas></div>
+              </div>
+            </section>
+
+          </div>
+        </div>
+
+        <!-- 4. ТАРИФЫ -->
+        <div class="analysis-section-block" data-cat="tariffs">
+          <h2 class="analysis-section-title">🏷️ Тарифы и ставки ЧТС</h2>
+          <div class="analysis-chart-grid">
+            
+            <!-- 1. Сравнение ставок по городам: 1 ур vs 5 ур -->
+            <section class="analysis-chart-panel" id="panel-tariffs-city-avg">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">Ставки по городам: Базовая vs Максимальная (₽/час)</h3>
+                  <span class="analysis-panel-badge">1-й уровень vs 5-й уровень</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-data-toggle" data-chart="analysis-tariffs-city-avg" title="Развернуть/свернуть города">
+                    <span class="toggle-icon">▼</span> <span class="toggle-text">Все города</span>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-tariffs-city-avg" title="Во весь экран">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-tariffs-city-avg" style="height: 300px;"><canvas id="analysis-tariffs-city-avg"></canvas></div>
+                <div class="analysis-panel-footer">
+                  <button type="button" class="btn btn-sm btn-analysis-expand-btn" data-chart="analysis-tariffs-city-avg">
+                    <span class="btn-text">▼ Развернуть все города</span>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- 2. Вилка ставок по должностям -->
+            <section class="analysis-chart-panel" id="panel-tariffs-positions">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">Вилка ставок по должностям (1-й ур. vs 5-й ур.)</h3>
+                  <span class="analysis-panel-badge">Диапазон ставок (₽/час)</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-data-toggle" data-chart="analysis-tariffs-positions" title="Развернуть/свернуть должности">
+                    <span class="toggle-icon">▼</span> <span class="toggle-text">Все</span>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-tariffs-positions" title="Во весь экран">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-tariffs-positions" style="height: 300px;"><canvas id="analysis-tariffs-positions"></canvas></div>
+                <div class="analysis-panel-footer">
+                  <button type="button" class="btn btn-sm btn-analysis-expand-btn" data-chart="analysis-tariffs-positions">
+                    <span class="btn-text">▼ Развернуть все должности</span>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- 3. ТОП магазинов по базовой ставке -->
+            <section class="analysis-chart-panel" id="panel-tariffs-top-stores">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">ТОП магазинов (ТК) с наивысшей ставкой ЧТС</h3>
+                  <span class="analysis-panel-badge">Максимальная оплата</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-data-toggle" data-chart="analysis-tariffs-top-stores" title="Развернуть/свернуть магазины">
+                    <span class="toggle-icon">▼</span> <span class="toggle-text">ТОП-20 ТК</span>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-tariffs-top-stores" title="Во весь экран">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-tariffs-top-stores" style="height: 300px;"><canvas id="analysis-tariffs-top-stores"></canvas></div>
+                <div class="analysis-panel-footer">
+                  <button type="button" class="btn btn-sm btn-analysis-expand-btn" data-chart="analysis-tariffs-top-stores">
+                    <span class="btn-text">▼ Развернуть ТОП-20 ТК</span>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+          </div>
+        </div>
+
+        <!-- 5. СКВОЗНОЙ ПЛАН / ФАКТ -->
+        <div class="analysis-section-block" data-cat="cross">
+          <h2 class="analysis-section-title">🎯 Сквозной План / Факт закрытия потребностей</h2>
+          <div class="analysis-chart-grid">
+            
+            <!-- 1. План / Факт по городам -->
+            <section class="analysis-chart-panel" id="panel-cross-fulfillment" style="grid-column: 1 / -1;">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">Выполнение плана по городам (План людей vs Факт смен)</h3>
+                  <span class="analysis-panel-badge">Требуется людей vs отработано смен</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-data-toggle" data-chart="analysis-cross-fulfillment" title="Развернуть/свернуть города">
+                    <span class="toggle-icon">▼</span> <span class="toggle-text">Все города</span>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-cross-fulfillment" title="Во весь экран с детальной таблицей">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-cross-fulfillment" style="height: 320px;"><canvas id="analysis-cross-fulfillment"></canvas></div>
+                <div class="analysis-panel-footer">
+                  <button type="button" class="btn btn-sm btn-analysis-expand-btn" data-chart="analysis-cross-fulfillment">
+                    <span class="btn-text">▼ Развернуть все города</span>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- 2. Процент выполнения плана по городам -->
+            <section class="analysis-chart-panel" id="panel-cross-city-pct">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">Рейтинг городов по выполнению плана (%)</h3>
+                  <span class="analysis-panel-badge">Индекс закрытия дефицита</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-data-toggle" data-chart="analysis-cross-city-pct" title="Развернуть/свернуть города">
+                    <span class="toggle-icon">▼</span> <span class="toggle-text">Все города</span>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-cross-city-pct" title="Во весь экран">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-cross-city-pct" style="height: 300px;"><canvas id="analysis-cross-city-pct"></canvas></div>
+                <div class="analysis-panel-footer">
+                  <button type="button" class="btn btn-sm btn-analysis-expand-btn" data-chart="analysis-cross-city-pct">
+                    <span class="btn-text">▼ Развернуть все города</span>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- 3. План / Факт по должностям -->
+            <section class="analysis-chart-panel" id="panel-cross-positions">
+              <div class="analysis-panel-header">
+                <div class="analysis-panel-title-group">
+                  <h3 class="analysis-chart-title mb-0">План / Факт по должностям (чел. vs смен)</h3>
+                  <span class="analysis-panel-badge">Закрытие специальностей</span>
+                </div>
+                <div class="analysis-panel-actions">
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-data-toggle" data-chart="analysis-cross-positions" title="Развернуть/свернуть должности">
+                    <span class="toggle-icon">▼</span> <span class="toggle-text">Все должности</span>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-fullscreen" data-chart="analysis-cross-positions" title="Во весь экран">
+                    ⛶
+                  </button>
+                  <button type="button" class="btn btn-sm btn-analysis-action btn-analysis-collapse" title="Свернуть график">
+                    <span class="btn-analysis-collapse-icon">▾</span>
+                  </button>
+                </div>
+              </div>
+              <div class="analysis-panel-body">
+                <div class="analysis-chart-wrap" id="wrap-analysis-cross-positions" style="height: 300px;"><canvas id="analysis-cross-positions"></canvas></div>
+                <div class="analysis-panel-footer">
+                  <button type="button" class="btn btn-sm btn-analysis-expand-btn" data-chart="analysis-cross-positions">
+                    <span class="btn-text">▼ Развернуть все должности</span>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+          </div>
+        </div>
+
+        <!-- 6. КОНСТРУКТОР -->
+        <div class="analysis-section-block" data-cat="builder">
+          <h2 class="analysis-section-title">🛠️ Собственный кастомный график</h2>
+          <div class="filters-wrapper">
+            <div class="analysis-builder">
+              <div>
+                <label class="filter-label" for="analysis-source">Источник</label>
+                <select class="form-select input-compact" id="analysis-source">
+                  <option value="needs">Потребности</option>
+                  <option value="shift">1 смена</option>
+                  <option value="tariffs">Тарифы</option>
+                  <option value="daily">Сверка день</option>
+                  <option value="weekly">Сверка неделя</option>
+                </select>
+              </div>
+              <div>
+                <label class="filter-label" for="analysis-dimension">Сравнивать по</label>
+                <select class="form-select input-compact" id="analysis-dimension"></select>
+              </div>
+              <div>
+                <label class="filter-label" for="analysis-metric">Показатель</label>
+                <select class="form-select input-compact" id="analysis-metric"></select>
+              </div>
+              <div>
+                <label class="filter-label" for="analysis-type">Тип графика</label>
+                <select class="form-select input-compact" id="analysis-type">
+                  <option value="bar">Столбцы</option>
+                  <option value="line">Линия</option>
+                  <option value="doughnut">Кольцо</option>
+                </select>
+              </div>
+              <button type="button" class="btn-analytics-toggle" id="analysis-add-chart" style="height: 36px;">＋ Добавить график</button>
+            </div>
+          </div>
+          <div id="analysis-custom-charts" class="analysis-chart-grid"></div>
+          <div id="analysis-empty" class="analysis-empty" style="display:none;">Для выбранного источника пока нет данных.</div>
+        </div>
+
+        <!-- ПОЛНОЭКРАННОЕ МОДАЛЬНОЕ ОКНО ДЛЯ ДЕТАЛЬНОГО АНАЛИЗА ГРАФИКА -->
+        <div id="analysis-modal-fullscreen" class="analysis-modal-backdrop" style="display:none;">
+          <div class="analysis-modal-dialog">
+            <div class="analysis-modal-header">
+              <div>
+                <h4 id="analysis-modal-title" class="analysis-modal-title">Детальная аналитика</h4>
+                <div id="analysis-modal-subtitle" class="analysis-modal-subtitle">Полная выборка данных</div>
+              </div>
+              <button type="button" class="analysis-modal-close" id="analysis-modal-close" title="Закрыть">✕</button>
+            </div>
+            <div class="analysis-modal-body">
+              <div class="analysis-modal-chart-wrap">
+                <canvas id="analysis-modal-canvas"></canvas>
+              </div>
+              <div id="analysis-modal-table" class="analysis-modal-table-wrap"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ============================================== -->
+      <!-- РАЗДЕЛ 4: СЕКРЕТНЫЙ РАЗДЕЛ (СВЕРКА ДЕНЬ/НЕДЕЛЯ) -->
+      <!-- ============================================== -->
+      <div class="tab-pane fade special-only" id="pills-special" role="tabpanel">
+        
+        <!-- ПЕРЕКЛЮЧАТЕЛЬ МЕЖДУ ЕЖЕДНЕВНОЙ И НЕДЕЛЬНОЙ СВЕРКОЙ -->
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+          <ul class="nav nav-sub-pills" id="pills-sub-reconcile" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="sub-daily-tab" data-bs-toggle="pill" data-bs-target="#sub-daily-pane" type="button" role="tab">📅 Ежедневная сверка</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="sub-weekly-tab" data-bs-toggle="pill" data-bs-target="#sub-weekly-pane" type="button" role="tab">📆 Недельная сверка</button>
+            </li>
+          </ul>
+          <span class="badge-access-key">
+            🔒 Спец. доступ: Margarita
+          </span>
+        </div>
+
+        <div class="tab-content" id="sub-reconcile-content">
+          
+          <!-- ПОДВКЛАДКА 1: ЕЖЕДНЕВНАЯ СВЕРКА (СВЕРКА ДЕНЬ) -->
+          <div class="tab-pane fade show active" id="sub-daily-pane" role="tabpanel">
+            <div id="loader-rec-daily" class="loader-container">
+              <div class="spinner-border loader-spinner mb-2" role="status"></div>
+              <div class="loader-text">Формирование ежедневной сверки...</div>
+            </div>
+
+            <div id="content-rec-daily" style="display: none;">
+              <!-- МЕТРИКИ ДНЕВНОЙ СВЕРКИ -->
+              <div class="stats-card-box d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <div class="d-flex gap-2 flex-wrap align-items-stretch w-100-mobile">
+                  <div class="stat-pill-box" style="min-width: 150px; background: var(--ios-input-bg); border: 1px solid var(--ios-input-border);">
+                    <div class="stat-pill-title" style="color: var(--ios-text-secondary); white-space: nowrap;" id="rec-d-title-count">Смен за день</div>
+                    <div class="stat-pill-val" style="color: var(--ios-text);" id="rec-d-total-rows">0</div>
+                  </div>
+                  <div class="stat-pill-box" style="background-color: var(--ios-blue-light); border-color: rgba(0, 113, 227, 0.3); min-width: 135px;">
+                    <div class="stat-pill-title" style="color: var(--ios-blue);">Всего часов</div>
+                    <div class="stat-pill-val" style="color: var(--ios-blue);" id="rec-d-total-hours">0 ч.</div>
+                  </div>
+                  <div class="stat-pill-box" style="background-color: var(--ios-green-light); border-color: rgba(52, 199, 89, 0.3); min-width: 145px;">
+                    <div class="stat-pill-title" style="color: var(--ios-green);">Общая выплата</div>
+                    <div class="stat-pill-val" style="color: var(--ios-green);" id="rec-d-total-payout">0 ₽</div>
+                  </div>
+                </div>
+
+                <div class="d-flex align-items-center gap-2 mode-switch-wrap">
+                  <span class="text-muted fw-bold" style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em;">Вид:</span>
+                  <div class="btn-group btn-group-sm" role="group">
+                    <button type="button" class="btn btn-outline-primary active fw-semibold btn-mode-toggle" id="rec-d-btn-mode-days">Все смены</button>
+                    <button type="button" class="btn btn-outline-primary fw-semibold btn-mode-toggle" id="rec-d-btn-mode-all">Сводка по людям</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ФИЛЬТРЫ ДНЕВНОЙ СВЕРКИ -->
+              <div class="filters-wrapper">
+                <div class="row g-2">
+                  <div class="col-md-2 col-sm-4 col-6"><div class="filter-label">Номер ТК</div><div id="filter-rec-d-store"></div></div>
+                  <div class="col-md-2 col-sm-4 col-6"><div class="filter-label">Город</div><div id="filter-rec-d-city"></div></div>
+                  <div class="col-md-2 col-sm-4 col-6"><div class="filter-label">СВ</div><div id="filter-rec-d-sv"></div></div>
+                  <div class="col-md-3 col-sm-6 col-6"><div class="filter-label">Специальность</div><div id="filter-rec-d-spec"></div></div>
+                  <div class="col-md-3 col-sm-6 col-12">
+                    <div class="filter-label">Дата (От и До)</div>
+                    <div class="d-flex gap-1">
+                      <input type="date" id="filter-rec-d-date-from" class="form-control form-control-sm input-compact">
+                      <span class="align-self-center text-muted">-</span>
+                      <input type="date" id="filter-rec-d-date-to" class="form-control form-control-sm input-compact">
+                      <button class="btn btn-sm btn-outline-secondary btn-compact" id="clear-rec-d-dates" title="Сбросить">✕</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="rec-d-view-days" class="table-responsive">
+                <table id="tableRecDailyDays" class="table table-hover table-bordered align-middle">
+                  <thead>
+                    <tr>
+                      <th class="text-center">Ключ</th><th class="text-center">СВ</th><th class="text-center">Телефон</th>
+                      <th class="text-center">Дата</th><th class="text-center">ФИО</th><th class="text-center">Номер ТК</th>
+                      <th class="text-center">Город</th><th class="text-center">Специальность</th><th class="text-center">Часы</th>
+                      <th class="text-center">Тариф</th><th class="text-center">Выплата исполнителю</th><th class="text-center">Гражданство</th>
+                      <th class="text-center">Тип</th><th class="text-center">ИНН</th><th class="text-center">Примечание</th>
+                    </tr>
+                  </thead>
+                  <tbody id="body-rec-d-days"></tbody>
+                </table>
+              </div>
+
+              <div id="rec-d-view-summary" class="table-responsive" style="display: none;">
+                <table id="tableRecDailySummary" class="table table-hover table-bordered align-middle">
+                  <thead>
+                    <tr>
+                      <th class="text-center">Телефон</th><th class="text-center">ФИО</th><th class="text-center">Номер ТК</th>
+                      <th class="text-center">Город</th><th class="text-center">Специальность</th><th class="text-center">Смен</th>
+                      <th class="text-center">Всего часов</th><th class="text-center">Тариф</th><th class="text-center">Выплата исполнителю</th>
+                    </tr>
+                  </thead>
+                  <tbody id="body-rec-d-summary"></tbody>
+                </table>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ПОДВКЛАДКА 2: НЕДЕЛЬНАЯ СВЕРКА (СВЕРКА НЕДЕЛЯ) -->
+          <div class="tab-pane fade" id="sub-weekly-pane" role="tabpanel">
+            <div id="loader-rec-weekly" class="loader-container">
+              <div class="spinner-border loader-spinner mb-2" role="status"></div>
+              <div class="loader-text">Формирование недельной сверки...</div>
+            </div>
+
+            <div id="content-rec-weekly" style="display: none;">
+              <!-- МЕТРИКИ НЕДЕЛЬНОЙ СВЕРКИ -->
+              <div class="stats-card-box d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <div class="d-flex gap-2 flex-wrap align-items-stretch w-100-mobile">
+                  <div class="stat-pill-box" style="min-width: 150px; background: var(--ios-input-bg); border: 1px solid var(--ios-input-border);">
+                    <div class="stat-pill-title" style="color: var(--ios-text-secondary); white-space: nowrap;" id="rec-w-title-count">Людей в сверке</div>
+                    <div class="stat-pill-val" style="color: var(--ios-text);" id="rec-w-total-rows">0</div>
+                  </div>
+                  <div class="stat-pill-box" style="background-color: var(--ios-blue-light); border-color: rgba(0, 113, 227, 0.3); min-width: 135px;">
+                    <div class="stat-pill-title" style="color: var(--ios-blue);">Всего часов</div>
+                    <div class="stat-pill-val" style="color: var(--ios-blue);" id="rec-w-total-hours">0 ч.</div>
+                  </div>
+                  <div class="stat-pill-box" style="background-color: var(--ios-green-light); border-color: rgba(52, 199, 89, 0.3); min-width: 145px;">
+                    <div class="stat-pill-title" style="color: var(--ios-green);">Общая выплата</div>
+                    <div class="stat-pill-val" style="color: var(--ios-green);" id="rec-w-total-payout">0 ₽</div>
+                  </div>
+                </div>
+
+                <div class="d-flex align-items-center gap-2 mode-switch-wrap">
+                  <span class="text-muted fw-bold" style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em;">Вид:</span>
+                  <div class="btn-group btn-group-sm" role="group">
+                    <button type="button" class="btn btn-outline-primary active fw-semibold btn-mode-toggle" id="rec-w-btn-mode-all">Неделя общая (по людям)</button>
+                    <button type="button" class="btn btn-outline-primary fw-semibold btn-mode-toggle" id="rec-w-btn-mode-days">По дням (все смены)</button>
+                    <button type="button" class="btn btn-outline-primary fw-semibold btn-mode-toggle" id="rec-w-btn-mode-compare">⚖️ Сравнение 2 периодов</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ФИЛЬТРЫ НЕДЕЛЬНОЙ СВЕРКИ -->
+              <div class="filters-wrapper">
+                <div class="row g-2">
+                  <div class="col-md-2 col-sm-4 col-6"><div class="filter-label">Номер ТК</div><div id="filter-rec-w-store"></div></div>
+                  <div class="col-md-2 col-sm-4 col-6"><div class="filter-label">Город</div><div id="filter-rec-w-city"></div></div>
+                  <div class="col-md-2 col-sm-4 col-6"><div class="filter-label">СВ</div><div id="filter-rec-w-sv"></div></div>
+                  <div class="col-md-3 col-sm-6 col-6"><div class="filter-label">Специальность</div><div id="filter-rec-w-spec"></div></div>
+                  <div id="rec-w-standard-date-col" class="col-md-3 col-sm-6 col-12">
+                    <div class="filter-label">Дата (От и До)</div>
+                    <div class="d-flex gap-1">
+                      <input type="date" id="filter-rec-w-date-from" class="form-control form-control-sm input-compact">
+                      <span class="align-self-center text-muted">-</span>
+                      <input type="date" id="filter-rec-w-date-to" class="form-control form-control-sm input-compact">
+                      <button class="btn btn-sm btn-outline-secondary btn-compact" id="clear-rec-w-dates" title="Сбросить">✕</button>
+                    </div>
+                  </div>
+                  <div id="rec-w-compare-date-col" class="col-12" style="display: none;">
+                    <div class="p-3 rounded-3" style="background: rgba(0, 113, 227, 0.05); border: 1px solid rgba(0, 113, 227, 0.2);">
+                      <div class="row g-2 align-items-end">
+                        <div class="col-12 col-md-5">
+                          <div class="filter-label text-primary" style="font-size: 0.74rem; font-weight: 700;">📅 Период 1 (Прошлый)</div>
+                          <div class="d-flex gap-1 align-items-center">
+                            <input type="date" id="filter-rec-w-p1-from" class="form-control form-control-sm input-compact" title="Период 1: Дата от">
+                            <span class="text-muted">—</span>
+                            <input type="date" id="filter-rec-w-p1-to" class="form-control form-control-sm input-compact" title="Период 1: Дата до">
+                          </div>
+                        </div>
+                        <div class="col-12 col-md-5">
+                          <div class="filter-label text-success" style="font-size: 0.74rem; font-weight: 700;">📅 Период 2 (Текущий)</div>
+                          <div class="d-flex gap-1 align-items-center">
+                            <input type="date" id="filter-rec-w-p2-from" class="form-control form-control-sm input-compact" title="Период 2: Дата от">
+                            <span class="text-muted">—</span>
+                            <input type="date" id="filter-rec-w-p2-to" class="form-control form-control-sm input-compact" title="Период 2: Дата до">
+                          </div>
+                        </div>
+                        <div class="col-12 col-md-2">
+                          <button type="button" class="btn btn-sm btn-outline-secondary w-100 btn-compact" id="clear-rec-w-compare-dates" title="Сбросить даты сравнения">Сбросить</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- БЛОК СРАВНЕНИЯ 2 ПЕРИОДОВ С РАЗБИВКОЙ ПО СРЕЗАМ -->
+              <div id="rec-w-view-compare" style="display: none;">
+                <!-- Переключатель среза сравнения -->
+                <div class="d-flex align-items-center gap-2 mb-3 flex-wrap" id="rec-w-compare-grouping-bar" style="background: var(--glass-nested-bg); border: 1px solid var(--glass-nested-border); border-radius: 14px; padding: 10px 14px;">
+                  <span class="text-muted fw-bold" style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em;">Срез сравнения:</span>
+                  <div class="btn-group btn-group-sm" role="group">
+                    <button type="button" class="btn btn-outline-secondary active fw-semibold btn-compare-submode" id="btn-compare-group-people" data-group="people">👤 По людям</button>
+                    <button type="button" class="btn btn-outline-secondary fw-semibold btn-compare-submode" id="btn-compare-group-city" data-group="city">🏙️ По городам</button>
+                    <button type="button" class="btn btn-outline-secondary fw-semibold btn-compare-submode" id="btn-compare-group-tk" data-group="tk">🏪 По магазинам (ТК)</button>
+                    <button type="button" class="btn btn-outline-secondary fw-semibold btn-compare-submode" id="btn-compare-group-spec" data-group="spec">💼 По специальностям</button>
+                  </div>
+                </div>
+
+                <!-- 1. Срез: ПО ЛЮДЯМ -->
+                <div id="rec-w-compare-wrap-people" class="table-responsive">
+                  <table id="tableRecWeeklyComparePeople" class="table table-hover table-bordered align-middle">
+                    <thead>
+                      <tr>
+                        <th class="text-center">Телефон</th>
+                        <th class="text-center">ФИО</th>
+                        <th class="text-center">Номер ТК</th>
+                        <th class="text-center">Город</th>
+                        <th class="text-center">Специальность</th>
+                        <th class="text-center" style="background: rgba(0, 113, 227, 0.06);"><span class="badge text-bg-primary">П1</span> Смен</th>
+                        <th class="text-center" style="background: rgba(0, 113, 227, 0.06);"><span class="badge text-bg-primary">П1</span> Часов</th>
+                        <th class="text-center" style="background: rgba(0, 113, 227, 0.06);"><span class="badge text-bg-primary">П1</span> Выплата</th>
+                        <th class="text-center" style="background: rgba(52, 199, 89, 0.06);"><span class="badge text-bg-success">П2</span> Смен</th>
+                        <th class="text-center" style="background: rgba(52, 199, 89, 0.06);"><span class="badge text-bg-success">П2</span> Часов</th>
+                        <th class="text-center" style="background: rgba(52, 199, 89, 0.06);"><span class="badge text-bg-success">П2</span> Выплата</th>
+                        <th class="text-center" style="background: rgba(255, 149, 0, 0.06);"><span class="badge" style="background: rgba(255, 149, 0, 0.25); color: #ffb340; border: 1px solid rgba(255, 149, 0, 0.5);">±</span> Смен</th>
+                        <th class="text-center" style="background: rgba(255, 149, 0, 0.06);"><span class="badge" style="background: rgba(255, 149, 0, 0.25); color: #ffb340; border: 1px solid rgba(255, 149, 0, 0.5);">±</span> Часов</th>
+                        <th class="text-center" style="background: rgba(255, 149, 0, 0.06);"><span class="badge" style="background: rgba(255, 149, 0, 0.25); color: #ffb340; border: 1px solid rgba(255, 149, 0, 0.5);">±</span> ФОТ (₽)</th>
+                        <th class="text-center" style="background: rgba(255, 149, 0, 0.06);">Динамика</th>
+                      </tr>
+                    </thead>
+                    <tbody id="body-rec-w-compare-people"></tbody>
+                  </table>
+                </div>
+
+                <!-- 2. Срез: ПО ГОРОДАМ -->
+                <div id="rec-w-compare-wrap-city" class="table-responsive" style="display: none;">
+                  <table id="tableRecWeeklyCompareCity" class="table table-hover table-bordered align-middle">
+                    <thead>
+                      <tr>
+                        <th class="text-center">Город</th>
+                        <th class="text-center" style="background: rgba(0, 113, 227, 0.06);"><span class="badge text-bg-primary">П1</span> Людей</th>
+                        <th class="text-center" style="background: rgba(0, 113, 227, 0.06);"><span class="badge text-bg-primary">П1</span> Смен</th>
+                        <th class="text-center" style="background: rgba(0, 113, 227, 0.06);"><span class="badge text-bg-primary">П1</span> Часов</th>
+                        <th class="text-center" style="background: rgba(0, 113, 227, 0.06);"><span class="badge text-bg-primary">П1</span> ФОТ (₽)</th>
+                        <th class="text-center" style="background: rgba(52, 199, 89, 0.06);"><span class="badge text-bg-success">П2</span> Людей</th>
+                        <th class="text-center" style="background: rgba(52, 199, 89, 0.06);"><span class="badge text-bg-success">П2</span> Смен</th>
+                        <th class="text-center" style="background: rgba(52, 199, 89, 0.06);"><span class="badge text-bg-success">П2</span> Часов</th>
+                        <th class="text-center" style="background: rgba(52, 199, 89, 0.06);"><span class="badge text-bg-success">П2</span> ФОТ (₽)</th>
+                        <th class="text-center" style="background: rgba(255, 149, 0, 0.06);"><span class="badge" style="background: rgba(255, 149, 0, 0.25); color: #ffb340; border: 1px solid rgba(255, 149, 0, 0.5);">±</span> Людей</th>
+                        <th class="text-center" style="background: rgba(255, 149, 0, 0.06);"><span class="badge" style="background: rgba(255, 149, 0, 0.25); color: #ffb340; border: 1px solid rgba(255, 149, 0, 0.5);">±</span> Смен</th>
+                        <th class="text-center" style="background: rgba(255, 149, 0, 0.06);"><span class="badge" style="background: rgba(255, 149, 0, 0.25); color: #ffb340; border: 1px solid rgba(255, 149, 0, 0.5);">±</span> Часов</th>
+                        <th class="text-center" style="background: rgba(255, 149, 0, 0.06);"><span class="badge" style="background: rgba(255, 149, 0, 0.25); color: #ffb340; border: 1px solid rgba(255, 149, 0, 0.5);">±</span> ФОТ (₽)</th>
+                        <th class="text-center" style="background: rgba(255, 149, 0, 0.06);">Динамика</th>
+                      </tr>
+                    </thead>
+                    <tbody id="body-rec-w-compare-city"></tbody>
+                  </table>
+                </div>
+
+                <!-- 3. Срез: ПО МАГАЗИНАМ (ТК) -->
+                <div id="rec-w-compare-wrap-tk" class="table-responsive" style="display: none;">
+                  <table id="tableRecWeeklyCompareTk" class="table table-hover table-bordered align-middle">
+                    <thead>
+                      <tr>
+                        <th class="text-center">Номер ТК</th>
+                        <th class="text-center">Город</th>
+                        <th class="text-center" style="background: rgba(0, 113, 227, 0.06);"><span class="badge text-bg-primary">П1</span> Людей</th>
+                        <th class="text-center" style="background: rgba(0, 113, 227, 0.06);"><span class="badge text-bg-primary">П1</span> Смен</th>
+                        <th class="text-center" style="background: rgba(0, 113, 227, 0.06);"><span class="badge text-bg-primary">П1</span> Часов</th>
+                        <th class="text-center" style="background: rgba(0, 113, 227, 0.06);"><span class="badge text-bg-primary">П1</span> ФОТ (₽)</th>
+                        <th class="text-center" style="background: rgba(52, 199, 89, 0.06);"><span class="badge text-bg-success">П2</span> Людей</th>
+                        <th class="text-center" style="background: rgba(52, 199, 89, 0.06);"><span class="badge text-bg-success">П2</span> Смен</th>
+                        <th class="text-center" style="background: rgba(52, 199, 89, 0.06);"><span class="badge text-bg-success">П2</span> Часов</th>
+                        <th class="text-center" style="background: rgba(52, 199, 89, 0.06);"><span class="badge text-bg-success">П2</span> ФОТ (₽)</th>
+                        <th class="text-center" style="background: rgba(255, 149, 0, 0.06);"><span class="badge" style="background: rgba(255, 149, 0, 0.25); color: #ffb340; border: 1px solid rgba(255, 149, 0, 0.5);">±</span> Людей</th>
+                        <th class="text-center" style="background: rgba(255, 149, 0, 0.06);"><span class="badge" style="background: rgba(255, 149, 0, 0.25); color: #ffb340; border: 1px solid rgba(255, 149, 0, 0.5);">±</span> Смен</th>
+                        <th class="text-center" style="background: rgba(255, 149, 0, 0.06);"><span class="badge" style="background: rgba(255, 149, 0, 0.25); color: #ffb340; border: 1px solid rgba(255, 149, 0, 0.5);">±</span> Часов</th>
+                        <th class="text-center" style="background: rgba(255, 149, 0, 0.06);"><span class="badge" style="background: rgba(255, 149, 0, 0.25); color: #ffb340; border: 1px solid rgba(255, 149, 0, 0.5);">±</span> ФОТ (₽)</th>
+                        <th class="text-center" style="background: rgba(255, 149, 0, 0.06);">Динамика</th>
+                      </tr>
+                    </thead>
+                    <tbody id="body-rec-w-compare-tk"></tbody>
+                  </table>
+                </div>
+
+                <!-- 4. Срез: ПО СПЕЦИАЛЬНОСТЯМ -->
+                <div id="rec-w-compare-wrap-spec" class="table-responsive" style="display: none;">
+                  <table id="tableRecWeeklyCompareSpec" class="table table-hover table-bordered align-middle">
+                    <thead>
+                      <tr>
+                        <th class="text-center">Специальность</th>
+                        <th class="text-center" style="background: rgba(0, 113, 227, 0.06);"><span class="badge text-bg-primary">П1</span> Людей</th>
+                        <th class="text-center" style="background: rgba(0, 113, 227, 0.06);"><span class="badge text-bg-primary">П1</span> Смен</th>
+                        <th class="text-center" style="background: rgba(0, 113, 227, 0.06);"><span class="badge text-bg-primary">П1</span> Часов</th>
+                        <th class="text-center" style="background: rgba(0, 113, 227, 0.06);"><span class="badge text-bg-primary">П1</span> ФОТ (₽)</th>
+                        <th class="text-center" style="background: rgba(52, 199, 89, 0.06);"><span class="badge text-bg-success">П2</span> Людей</th>
+                        <th class="text-center" style="background: rgba(52, 199, 89, 0.06);"><span class="badge text-bg-success">П2</span> Смен</th>
+                        <th class="text-center" style="background: rgba(52, 199, 89, 0.06);"><span class="badge text-bg-success">П2</span> Часов</th>
+                        <th class="text-center" style="background: rgba(52, 199, 89, 0.06);"><span class="badge text-bg-success">П2</span> ФОТ (₽)</th>
+                        <th class="text-center" style="background: rgba(255, 149, 0, 0.06);"><span class="badge" style="background: rgba(255, 149, 0, 0.25); color: #ffb340; border: 1px solid rgba(255, 149, 0, 0.5);">±</span> Людей</th>
+                        <th class="text-center" style="background: rgba(255, 149, 0, 0.06);"><span class="badge" style="background: rgba(255, 149, 0, 0.25); color: #ffb340; border: 1px solid rgba(255, 149, 0, 0.5);">±</span> Смен</th>
+                        <th class="text-center" style="background: rgba(255, 149, 0, 0.06);"><span class="badge" style="background: rgba(255, 149, 0, 0.25); color: #ffb340; border: 1px solid rgba(255, 149, 0, 0.5);">±</span> Часов</th>
+                        <th class="text-center" style="background: rgba(255, 149, 0, 0.06);"><span class="badge" style="background: rgba(255, 149, 0, 0.25); color: #ffb340; border: 1px solid rgba(255, 149, 0, 0.5);">±</span> ФОТ (₽)</th>
+                        <th class="text-center" style="background: rgba(255, 149, 0, 0.06);">Динамика</th>
+                      </tr>
+                    </thead>
+                    <tbody id="body-rec-w-compare-spec"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div id="rec-w-view-summary" class="table-responsive">
+                <table id="tableRecWeeklySummary" class="table table-hover table-bordered align-middle">
+                  <thead>
+                    <tr>
+                      <th class="text-center">Телефон</th><th class="text-center">ФИО</th><th class="text-center">Номер ТК</th>
+                      <th class="text-center">Город</th><th class="text-center">Специальность</th><th class="text-center">Смен</th>
+                      <th class="text-center">Всего часов</th><th class="text-center">Тариф</th><th class="text-center">Выплата исполнителю</th>
+                    </tr>
+                  </thead>
+                  <tbody id="body-rec-w-summary"></tbody>
+                </table>
+              </div>
+
+              <div id="rec-w-view-days" class="table-responsive" style="display: none;">
+                <table id="tableRecWeeklyDays" class="table table-hover table-bordered align-middle">
+                  <thead>
+                    <tr>
+                      <th class="text-center">Ключ</th><th class="text-center">СВ</th><th class="text-center">Телефон</th>
+                      <th class="text-center">Дата</th><th class="text-center">ФИО</th><th class="text-center">Номер ТК</th>
+                      <th class="text-center">Город</th><th class="text-center">Специальность</th><th class="text-center">Часы</th>
+                      <th class="text-center">Тариф</th><th class="text-center">Выплата исполнителю</th><th class="text-center">Гражданство</th>
+                      <th class="text-center">Тип</th><th class="text-center">ИНН</th><th class="text-center">Примечание</th>
+                    </tr>
+                  </thead>
+                  <tbody id="body-rec-w-days"></tbody>
+                </table>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ВКЛАДКА: БЕЗОПАСНОСТЬ И УПРАВЛЕНИЕ ДОСТУПОМ (ТОЛЬКО ДЛЯ МАРГАРИТЫ) -->
+      <div class="tab-pane fade special-only" id="pills-security" role="tabpanel">
+        <div class="card-main p-3 mb-4">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4 border-bottom pb-3">
+            <div>
+              <h4 class="mb-1 text-primary fw-bold d-flex align-items-center gap-2">
+                <span>🛡️</span> Управление доступом и Журнал безопасности
+              </h4>
+              <div class="text-muted small">
+                Таблица безопасности: 
+                <a href="https://docs.google.com/spreadsheets/d/1PWT7Tm70VDMhEXYYoVuVCuYrX3nfJuJxBYHmY2QwyjU/edit" target="_blank" class="text-decoration-none">
+                  РЕМИ_Безопасность_и_Доступы ↗
+                </a>
+                • Изолированное хранилище аккаунтов и аудита
+              </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <button type="button" class="btn btn-outline-secondary btn-sm" id="btn-refresh-security" title="Обновить таблицы">
+                🔄 Обновить
+              </button>
+              <button type="button" class="btn btn-primary btn-sm d-flex align-items-center gap-1" id="btn-open-add-user-modal">
+                <span>➕</span> Добавить сотрудника
+              </button>
+            </div>
+          </div>
+
+          <!-- БЛОК 1: ТАБЛИЦА ПОЛЬЗОВАТЕЛЕЙ И ДОСТУПОВ -->
+          <div class="mb-5">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6 class="fw-bold mb-0 text-secondary d-flex align-items-center gap-2">
+                <span>👥</span> Сотрудники с доступом к порталу
+                <span class="badge bg-secondary rounded-pill" id="badge-users-count">0</span>
+              </h6>
+            </div>
+            <div class="table-responsive">
+              <table id="tableSecurityUsers" class="table table-hover table-bordered align-middle">
+                <thead class="table-dark">
+                  <tr>
+                    <th class="text-center" style="width: 50px;">#</th>
+                    <th>Google Email</th>
+                    <th>ФИО / Должность</th>
+                    <th class="text-center" style="width: 140px;">Роль</th>
+                    <th class="text-center" style="width: 120px;">Статус</th>
+                    <th class="text-center" style="width: 130px;">Добавлен</th>
+                    <th class="text-center" style="width: 160px;">Действия</th>
+                  </tr>
+                </thead>
+                <tbody id="body-security-users">
+                  <tr>
+                    <td colspan="7" class="text-center text-muted py-4">
+                      <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                      Загрузка списка сотрудников...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- БЛОК 2: ЖУРНАЛ АКТИВНОСТИ И ВХОДОВ -->
+          <div>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6 class="fw-bold mb-0 text-secondary d-flex align-items-center gap-2">
+                <span>📜</span> Журнал последних посещений и входов
+                <span class="badge bg-secondary rounded-pill" id="badge-logs-count">0</span>
+              </h6>
+              <div class="text-muted small">
+                Фиксируются все попытки авторизации и изменения прав
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table id="tableSecurityLogs" class="table table-hover table-bordered align-middle">
+                <thead class="table-dark">
+                  <tr>
+                    <th class="text-center" style="width: 160px;">Время</th>
+                    <th>Email</th>
+                    <th>Имя</th>
+                    <th class="text-center" style="width: 120px;">Роль</th>
+                    <th>Действие</th>
+                    <th>Устройство / Браузер</th>
+                    <th class="text-center" style="width: 130px;">IP-адрес</th>
+                    <th class="text-center" style="width: 110px;">Статус</th>
+                  </tr>
+                </thead>
+                <tbody id="body-security-logs">
+                  <tr>
+                    <td colspan="8" class="text-center text-muted py-4">
+                      <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                      Загрузка журнала аудита...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- МОДАЛЬНОЕ ОКНО: ДОБАВЛЕНИЕ / РЕДАКТИРОВАНИЕ ПОЛЬЗОВАТЕЛЯ -->
+      <div class="modal fade" id="modalSecurityUser" tabindex="-1" aria-labelledby="modalSecurityUserTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-dark text-white">
+              <h5 class="modal-title d-flex align-items-center gap-2" id="modalSecurityUserTitle">
+                <span>🛡️</span> Доступ сотрудника
+              </h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <form id="form-security-user">
+              <div class="modal-body p-4">
+                <div class="mb-3">
+                  <label for="sec-user-email" class="form-label fw-bold">Google Email <span class="text-danger">*</span></label>
+                  <input type="email" class="form-control" id="sec-user-email" placeholder="name@gmail.com" required autocomplete="off">
+                  <div class="form-text">Почта Google аккаунта сотрудника (вход через кнопку Google).</div>
+                </div>
+                <div class="mb-3">
+                  <label for="sec-user-name" class="form-label fw-bold">ФИО или Имя сотрудника</label>
+                  <input type="text" class="form-control" id="sec-user-name" placeholder="Иван Иванов" autocomplete="off">
+                </div>
+                <div class="mb-3">
+                  <label for="sec-user-role" class="form-label fw-bold">Уровень доступа (Роль) <span class="text-danger">*</span></label>
+                  <select class="form-select" id="sec-user-role" required>
+                    <option value="viewer">Наблюдатель (Только Потребности и Тарифы)</option>
+                    <option value="shift">1 Смена (Потребности + 1 Смена + Тарифы)</option>
+                    <option value="margo">Маргарита (Полный доступ + Сверки + Безопасность)</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="sec-user-status" class="form-label fw-bold">Статус</label>
+                  <select class="form-select" id="sec-user-status">
+                    <option value="Активен" selected>Активен (Вход разрешён)</option>
+                    <option value="Заблокирован">Заблокирован (Вход запрещён)</option>
+                  </select>
+                </div>
+                <div id="sec-user-alert" class="alert alert-danger d-none mb-0 py-2 small"></div>
+              </div>
+              <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="submit" class="btn btn-primary px-4" id="btn-save-sec-user">
+                  <span class="spinner-border spinner-border-sm d-none me-1" id="spinner-save-user"></span>
+                  Сохранить
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- SPECIAL_END -->
+
+    </div>
+  </div>
+</div>
+
+<!-- Локальные автономные библиотеки (без внешних зависимостей) -->
+<script src="/vendor/jquery.min.js"></script>
+<script src="/vendor/bootstrap.bundle.min.js"></script>
+<script src="/vendor/jquery.dataTables.min.js"></script>
+<script src="/vendor/dataTables.bootstrap5.min.js"></script>
+<script src="/vendor/responsive.bootstrap5.min.js"></script>
+<script src="/vendor/virtual-select.min.js"></script>
+<script src="/vendor/chart.umd.min.js"></script>
+
+<script src="/js/portal.js"></script>
+</body>
+</html>

@@ -3,11 +3,19 @@
   "cleanUrls": true,
   "rewrites": [
     {
-      "source": "/Index.html",
-      "destination": "/index.html"
+      "source": "/portal",
+      "destination": "/api/portal"
     },
     {
-      "source": "/Index",
+      "source": "/portal/",
+      "destination": "/api/portal"
+    },
+    {
+      "source": "/portal.html",
+      "destination": "/api/portal"
+    },
+    {
+      "source": "/login",
       "destination": "/index.html"
     }
   ]

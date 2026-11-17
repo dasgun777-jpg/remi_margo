@@ -1,0 +1,2844 @@
+/* ============================================================
+       APPLE iOS 18 & visionOS LIQUID GLASS DESIGN SYSTEM
+       ============================================================ */
+    :root, [data-theme="light"] {
+      color-scheme: light;
+      --ios-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "Inter", sans-serif;
+      
+      /* Apple Ambient Mesh Wallpaper Background */
+      --ios-mesh: radial-gradient(at 0% 0%, rgba(224, 231, 255, 0.7) 0px, transparent 55%),
+                  radial-gradient(at 100% 0%, rgba(254, 226, 226, 0.6) 0px, transparent 50%),
+                  radial-gradient(at 50% 100%, rgba(243, 232, 255, 0.7) 0px, transparent 60%),
+                  #f5f5f7;
+      
+      /* Apple Liquid Glass Surface */
+      --glass-card-bg: rgba(255, 255, 255, 0.94);
+      --glass-card-border: rgba(255, 255, 255, 0.8);
+      --glass-card-specular: inset 0 1px 1px 0 rgba(255, 255, 255, 0.95);
+      --glass-card-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.07), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
+      
+      --glass-nested-bg: rgba(255, 255, 255, 0.88);
+      --glass-nested-border: rgba(0, 0, 0, 0.08);
+      --glass-nested-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.95), 0 2px 8px rgba(0, 0, 0, 0.04);
+      
+      /* Controls & Inputs */
+      --ios-input-bg: #ffffff;
+      --ios-input-border: rgba(0, 0, 0, 0.14);
+      --ios-input-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+      
+      /* Dropdown Sheet (Solid Opaque in Light Mode for Crystal Clarity) */
+      --glass-dropdown-bg: #ffffff;
+      --glass-dropdown-border: rgba(0, 0, 0, 0.12);
+      --glass-dropdown-shadow: 0 20px 48px -4px rgba(0, 0, 0, 0.18), 0 8px 16px -2px rgba(0, 0, 0, 0.06);
+      
+      /* Typography Colors */
+      --ios-text: #1d1d1f;
+      --ios-text-secondary: #48484a;
+      --ios-text-muted: #6e6e73;
+      --ios-separator: rgba(60, 60, 67, 0.1);
+      
+      /* Apple Vibrant Colors */
+      --ios-blue: #0071e3;
+      --ios-blue-hover: #0077ed;
+      --ios-blue-light: rgba(0, 113, 227, 0.1);
+      --ios-blue-glow: 0 4px 14px rgba(0, 113, 227, 0.3);
+      
+      --ios-green: #34c759;
+      --ios-green-light: rgba(52, 199, 89, 0.15);
+      --ios-amber: #ff9500;
+      --ios-amber-light: rgba(255, 149, 0, 0.15);
+      --ios-red: #ff3b30;
+      --ios-red-light: rgba(255, 59, 48, 0.15);
+      --ios-purple: #af52de;
+      --ios-purple-light: rgba(175, 82, 222, 0.15);
+      
+      /* Segmented Control */
+      --ios-segmented-track: rgba(118, 118, 128, 0.14);
+      --ios-segmented-thumb: #ffffff;
+      --ios-segmented-text: #1d1d1f;
+      --ios-segmented-shadow: 0 3px 10px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.06);
+
+      /* Table Header */
+      --table-header-bg: #1d1d1f;
+      --table-header-text: #ffffff;
+      --table-hover-bg: rgba(0, 113, 227, 0.04);
+      
+      /* Cupertino Switch */
+      --ios-switch-bg: #e5e5ea;
+    }
+
+    [data-theme="dark"] {
+      color-scheme: dark;
+      --ios-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "Inter", sans-serif;
+      
+      /* Apple Deep Space OLED Ambient Mesh Background */
+      --ios-mesh: radial-gradient(at 0% 0%, rgba(30, 41, 59, 0.75) 0px, transparent 50%),
+                  radial-gradient(at 100% 0%, rgba(49, 46, 129, 0.65) 0px, transparent 55%),
+                  radial-gradient(at 50% 100%, rgba(15, 23, 42, 0.85) 0px, transparent 65%),
+                  #0a0a0e;
+      
+      /* Apple Dark Liquid Glass Surface */
+      --glass-card-bg: rgba(26, 26, 32, 0.94);
+      --glass-card-border: rgba(255, 255, 255, 0.18);
+      --glass-card-specular: inset 0 1px 1px 0 rgba(255, 255, 255, 0.25);
+      --glass-card-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.85), 0 6px 16px -2px rgba(0, 0, 0, 0.5);
+      
+      --glass-nested-bg: rgba(36, 36, 44, 0.85);
+      --glass-nested-border: rgba(255, 255, 255, 0.15);
+      --glass-nested-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.12), 0 2px 8px rgba(0, 0, 0, 0.4);
+      
+      /* Controls & Inputs in Dark Mode */
+      --ios-input-bg: #232328;
+      --ios-input-border: rgba(255, 255, 255, 0.2);
+      --ios-input-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      
+      /* Dropdown Sheet (Solid Opaque in Dark Mode to Prevent Background Bleed) */
+      --glass-dropdown-bg: #1c1c1f;
+      --glass-dropdown-border: rgba(255, 255, 255, 0.22);
+      --glass-dropdown-shadow: 0 28px 65px rgba(0, 0, 0, 0.9), 0 8px 20px rgba(0, 0, 0, 0.7);
+      
+      /* Typography Colors */
+      --ios-text: #f5f5f7;
+      --ios-text-secondary: #e5e5ea;
+      --ios-text-muted: #98989f;
+      --ios-separator: rgba(255, 255, 255, 0.12);
+      
+      /* Apple Vibrant Colors Dark */
+      --ios-blue: #0a84ff;
+      --ios-blue-hover: #409cff;
+      --ios-blue-light: rgba(10, 132, 255, 0.25);
+      --ios-blue-glow: 0 4px 18px rgba(10, 132, 255, 0.45);
+      
+      --ios-green: #30d158;
+      --ios-green-light: rgba(48, 209, 88, 0.22);
+      --ios-amber: #ffd60a;
+      --ios-amber-light: rgba(255, 214, 10, 0.22);
+      --ios-red: #ff453a;
+      --ios-red-light: rgba(255, 69, 58, 0.22);
+      --ios-purple: #bf5af2;
+      --ios-purple-light: rgba(191, 90, 242, 0.22);
+      
+      /* Segmented Control */
+      --ios-segmented-track: rgba(118, 118, 128, 0.32);
+      --ios-segmented-thumb: #636366;
+      --ios-segmented-text: #ffffff;
+      --ios-segmented-shadow: 0 4px 12px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.3);
+
+      /* Table Header */
+      --table-header-bg: #141417;
+      --table-header-text: #ffffff;
+      --table-hover-bg: rgba(255, 255, 255, 0.05);
+      
+      /* Cupertino Switch */
+      --ios-switch-bg: #39393d;
+    }
+
+    html {
+      background-color: #f5f5f7;
+      -webkit-text-size-adjust: 100%;
+    }
+    html[data-theme="dark"],
+    [data-theme="dark"] html {
+      background-color: #0a0a0e;
+    }
+
+    body { 
+      background-color: #f5f5f7;
+      background: var(--ios-mesh) no-repeat center top;
+      background-size: 100% auto;
+      background-attachment: scroll;
+      font-family: var(--ios-font); 
+      color: var(--ios-text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+      overflow-x: clip;
+    }
+    [data-theme="dark"] body {
+      background-color: #0a0a0e;
+    }
+
+    .container-fluid { 
+      padding: 16px 22px; 
+      max-width: 1920px;
+    }
+    
+    /* ============================================================
+       1. APPLE GLASS NAVBAR (ШАПКА)
+       ============================================================ */
+    .app-header-bar {
+      background: var(--glass-card-bg);
+      border: 1px solid var(--glass-card-border);
+      border-radius: 22px;
+      padding: 12px 20px;
+      margin-bottom: 16px;
+      box-shadow: var(--glass-card-shadow), var(--glass-card-specular);
+      transition: background-color 0.25s ease, border-color 0.25s ease;
+      max-width: 100%;
+    }
+    .header-brand-group {
+      min-width: 0;
+      max-width: 100%;
+    }
+    .header-controls-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      min-width: 0;
+      max-width: 100%;
+    }
+    .header-utility-buttons {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      min-width: 0;
+      max-width: 100%;
+    }
+    .btn-portal-auth {
+      height: 36px !important;
+      padding: 0 12px !important;
+      border-radius: 12px !important;
+      font-weight: 600 !important;
+      font-size: 0.82rem !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .brand-logo-pill {
+      background: linear-gradient(145deg, var(--ios-blue) 0%, #0056b3 100%);
+      color: #ffffff;
+      font-size: 0.84rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      padding: 6px 14px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      box-shadow: var(--ios-blue-glow), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+    }
+
+    .brand-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ios-text);
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      margin: 0;
+    }
+
+    .brand-subtitle {
+      font-size: 0.73rem;
+      color: var(--ios-text-muted);
+      font-weight: 500;
+    }
+
+    .status-live-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--ios-green);
+      background: var(--ios-green-light);
+      border: 1px solid rgba(52, 199, 89, 0.35);
+      padding: 2px 8px;
+      border-radius: 9999px;
+      box-shadow: 0 1px 3px rgba(52, 199, 89, 0.15);
+    }
+    .status-dot-pulse {
+      width: 7px;
+      height: 7px;
+      background-color: var(--ios-green);
+      border-radius: 50%;
+      box-shadow: 0 0 0 2.5px rgba(52, 199, 89, 0.35);
+    }
+
+    /* === CUPERTINO SWITCH (ТАКТИЛЬНЫЙ ТУМБЛЕР APPLE) === */
+    .ios-theme-toggle {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      outline: none !important;
+    }
+    .ios-toggle-track {
+      width: 52px;
+      height: 30px;
+      background: var(--ios-switch-bg);
+      border-radius: 9999px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6px;
+      transition: background 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+      border: 1px solid var(--ios-separator);
+      box-sizing: border-box;
+    }
+    .ios-toggle-icon {
+      font-size: 13px;
+      line-height: 1;
+      user-select: none;
+      z-index: 1;
+    }
+    .ios-toggle-thumb {
+      position: absolute;
+      left: 2px;
+      top: 2px;
+      width: 24px;
+      height: 24px;
+      background: #ffffff;
+      border-radius: 50%;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.15);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    [data-theme="dark"] .ios-toggle-thumb {
+      transform: translateX(22px);
+    }
+    [data-theme="dark"] .ios-toggle-track {
+      background: #30d158;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25), 0 0 10px rgba(48, 209, 88, 0.3);
+    }
+    
+    /* === КНОПКА ОБНОВЛЕНИЯ ДАННЫХ === */
+    .btn-refresh-app {
+      background: var(--ios-input-bg);
+      border: 1px solid var(--ios-input-border);
+      color: var(--ios-text);
+      height: 36px;
+      padding: 0 14px;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: var(--ios-input-shadow);
+    }
+    .btn-refresh-app:hover {
+      transform: translateY(-1px);
+      border-color: var(--ios-blue);
+      color: var(--ios-blue);
+    }
+    .btn-refresh-app:active {
+      transform: scale(0.96);
+    }
+
+    /* === КНОПКА СБРОСА ШИРИНЫ КОЛОНОК === */
+    .btn-reset-widths {
+      background: var(--ios-input-bg);
+      border: 1px solid var(--ios-input-border);
+      color: var(--ios-text-secondary);
+      height: 36px;
+      padding: 0 12px;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: var(--ios-input-shadow);
+      cursor: pointer;
+      user-select: none;
+    }
+    .btn-reset-widths:hover {
+      transform: translateY(-1px);
+      border-color: var(--ios-amber);
+      color: var(--ios-amber);
+    }
+    .btn-reset-widths:active {
+      transform: scale(0.96);
+    }
+    .btn-reset-widths.btn-reset-active {
+      border-color: var(--ios-green) !important;
+      color: var(--ios-green) !important;
+      background: var(--ios-green-light) !important;
+    }
+
+    /* === ПЕРЕКЛЮЧАТЕЛЬ ИЗМЕНЕНИЯ ШИРИНЫ КОЛОНОК === */
+    .btn-toggle-col-resize {
+      background: var(--ios-input-bg);
+      border: 1px solid var(--ios-input-border);
+      color: var(--ios-text-secondary);
+      height: 36px;
+      padding: 0 10px;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: var(--ios-input-shadow);
+      cursor: pointer;
+      user-select: none;
+      margin: 0;
+    }
+    .btn-toggle-col-resize:hover {
+      transform: translateY(-1px);
+      border-color: var(--ios-blue);
+      color: var(--ios-blue);
+    }
+    .btn-toggle-col-resize:active {
+      transform: scale(0.96);
+    }
+    .btn-toggle-col-resize.is-active {
+      border-color: var(--ios-blue) !important;
+      background: var(--ios-blue-light) !important;
+      color: var(--ios-blue) !important;
+    }
+    .btn-toggle-col-resize input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border: 1.8px solid var(--ios-text-muted);
+      border-radius: 4px;
+      outline: none;
+      cursor: pointer;
+      position: relative;
+      background: transparent;
+      transition: all 0.15s ease;
+      display: grid;
+      place-content: center;
+      margin: 0;
+      flex-shrink: 0;
+    }
+    .btn-toggle-col-resize input[type="checkbox"]:checked {
+      background-color: var(--ios-blue);
+      border-color: var(--ios-blue);
+    }
+    .btn-toggle-col-resize input[type="checkbox"]:checked::before {
+      content: "";
+      width: 5px;
+      height: 9px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg) translate(-1px, -1px);
+    }
+
+    /* === СЕГМЕНТИРОВАННЫЙ КОНТРОЛЛЕР (iOS SEGMENTED CONTROL) === */
+    .nav-segmented {
+      background: var(--ios-segmented-track);
+      padding: 3px;
+      border-radius: 13px;
+      display: inline-flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      gap: 4px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+      border: 1px solid var(--ios-separator);
+      max-width: 100%;
+      min-width: 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .nav-segmented::-webkit-scrollbar {
+      display: none;
+    }
+    .nav-segmented .nav-link { 
+      border-radius: 10px; 
+      color: var(--ios-text-secondary); 
+      font-weight: 600; 
+      font-size: 0.82rem;
+      padding: 5px 14px;
+      min-height: 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+      background: transparent;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .nav-segmented .nav-link:hover:not(.active) {
+      color: var(--ios-text);
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .nav-segmented .nav-link.active { 
+      background: var(--ios-segmented-thumb); 
+      color: var(--ios-segmented-text); 
+      box-shadow: var(--ios-segmented-shadow);
+      font-weight: 700;
+    }
+
+    .tab-special-badge {
+      background: var(--ios-amber-light) !important;
+      color: var(--ios-amber) !important;
+      border: 1px solid rgba(255, 149, 0, 0.35) !important;
+    }
+    .tab-special-badge.active {
+      background: var(--ios-amber) !important;
+      color: #000000 !important;
+      box-shadow: 0 4px 14px rgba(255, 149, 0, 0.4) !important;
+    }
+    [data-theme="dark"] .tab-special-badge.active {
+      background: rgba(255, 159, 10, 0.28) !important;
+      color: #ff9f0a !important;
+      border: 1px solid rgba(255, 159, 10, 0.6) !important;
+      box-shadow: 0 4px 16px rgba(255, 159, 10, 0.35) !important;
+      font-weight: 700 !important;
+    }
+
+    /* Подвкладки сверки внутри секретного раздела */
+    .nav-sub-pills {
+      background: var(--ios-segmented-track);
+      padding: 3px;
+      border-radius: 13px;
+      display: inline-flex;
+      flex-wrap: nowrap;
+      gap: 4px;
+      max-width: 100%;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    .nav-sub-pills .nav-link {
+      border-radius: 10px;
+      color: var(--ios-text-secondary);
+      font-size: 0.81rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border: none;
+      background: transparent;
+    }
+    .nav-sub-pills .nav-link:hover:not(.active) {
+      color: var(--ios-text);
+    }
+    .nav-sub-pills .nav-link.active {
+      background: var(--ios-blue);
+      color: #ffffff;
+      box-shadow: var(--ios-blue-glow);
+    }
+
+    /* ============================================================
+       2. ГЛАВНАЯ СТЕКЛЯННАЯ КАРТОЧКА (LIQUID GLASS PANEL)
+       ============================================================ */
+    .card-main {
+      background: var(--glass-card-bg);
+      border: 1px solid var(--glass-card-border);
+      border-radius: 24px;
+      padding: 20px 22px;
+      box-shadow: var(--glass-card-shadow), var(--glass-card-specular);
+      transition: background-color 0.25s ease, border-color 0.25s ease;
+      max-width: 100%;
+      overflow-x: clip;
+    }
+
+    /* ============================================================
+       3. ПАНЕЛЬ ФИЛЬТРОВ (APPLE GROUPED INSET CONSOLE)
+       ============================================================ */
+    .filters-wrapper { 
+      background: var(--glass-nested-bg); 
+      border-radius: 18px; 
+      padding: 16px 18px; 
+      margin-bottom: 16px; 
+      border: 1px solid var(--glass-nested-border); 
+      box-shadow: var(--glass-nested-shadow);
+      position: relative;
+      z-index: 50;
+      transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .filter-label { 
+      font-weight: 700; 
+      font-size: 0.74rem; 
+      color: var(--ios-text-muted); 
+      text-transform: uppercase; 
+      letter-spacing: 0.05em; 
+      margin-bottom: 5px; 
+    }
+    
+    /* ============================================================
+       4. VIRTUAL-SELECT (ИСПРАВЛЕННЫЙ ВЫПАДАЮЩИЙ СПИСОК APPLE)
+       ============================================================ */
+    .vscomp-toggle-button { 
+      border: 1px solid var(--ios-input-border) !important; 
+      border-radius: 12px !important; 
+      padding: 5px 12px !important; 
+      background: var(--ios-input-bg) !important; 
+      box-shadow: var(--ios-input-shadow) !important; 
+      height: 36px !important;
+      font-size: 0.83rem !important;
+      font-family: var(--ios-font) !important;
+      color: var(--ios-text) !important;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    .vscomp-toggle-button:hover {
+      border-color: var(--ios-blue) !important;
+    }
+    .vscomp-wrapper.focused .vscomp-toggle-button,
+    .vscomp-wrapper:focus-within .vscomp-toggle-button {
+      border-color: var(--ios-blue) !important;
+      box-shadow: 0 0 0 3.5px var(--ios-blue-light) !important;
+    }
+    .vscomp-ele { width: 100%; max-width: 100%; }
+    
+    /* Высокая контрастность текста в закрытом селекте */
+    .vscomp-toggle-button .vscomp-value { 
+      color: var(--ios-text) !important; 
+      font-weight: 600 !important; 
+    }
+    .vscomp-wrapper .vscomp-value.has-placeholder,
+    .vscomp-placeholder { 
+      color: var(--ios-text-muted) !important; 
+      font-weight: 500 !important;
+      opacity: 1 !important;
+    }
+    .vscomp-clear-icon, .vscomp-arrow { color: var(--ios-text-muted) !important; }
+    
+    /* Исправление стрелки выпадающего списка VirtualSelect (видимость в темной теме) */
+    .vscomp-arrow::after {
+      border-bottom-color: var(--ios-text-muted) !important;
+      border-right-color: var(--ios-text-muted) !important;
+    }
+    .pop-comp-arrow::before {
+      background-color: var(--glass-dropdown-bg) !important;
+      border: 1px solid var(--glass-dropdown-border) !important;
+    }
+
+    /* Кнопка очистки селекта */
+    .vscomp-clear-icon::before, .vscomp-clear-icon::after {
+      background-color: var(--ios-text-muted) !important;
+    }
+    .vscomp-clear-icon:hover::before, .vscomp-clear-icon:hover::after,
+    .vscomp-clear-button:hover .vscomp-clear-icon::before,
+    .vscomp-clear-button:hover .vscomp-clear-icon::after {
+      background-color: var(--ios-text) !important;
+    }
+    .vscomp-search-clear {
+      color: var(--ios-text-muted) !important;
+      font-size: 20px !important;
+    }
+    .vscomp-search-clear:hover {
+      color: var(--ios-text) !important;
+    }
+
+    /* Мобильная кнопка закрытия попапа */
+    .vscomp-dropbox-close-button {
+      background-color: var(--glass-card-bg) !important;
+      color: var(--ios-text) !important;
+      border: 1px solid var(--glass-card-border) !important;
+    }
+
+    /* Бейджи выбранных значений (теги) */
+    .vscomp-value-tag {
+      background: var(--ios-blue-light) !important;
+      color: var(--ios-blue) !important;
+      border: 1px solid rgba(0, 113, 227, 0.3) !important;
+      border-radius: 9999px !important;
+      font-weight: 600 !important;
+    }
+
+    /* ВЫПАДАЮЩИЙ СПИСОК: 100% НЕПРОЗРАЧНЫЙ СОЛИДНЫЙ ФОН APPLE */
+    .vscomp-dropbox-wrapper {
+      z-index: 999999 !important;
+    }
+    .vscomp-dropbox {
+      border-radius: 18px !important;
+      box-shadow: var(--glass-dropdown-shadow) !important;
+      border: 1px solid var(--glass-dropdown-border) !important;
+      background: var(--glass-dropdown-bg) !important;
+      opacity: 1 !important;
+      font-family: var(--ios-font) !important;
+      padding: 6px !important;
+      overflow: hidden !important;
+      z-index: 999999 !important;
+      animation: iosPopoverIn 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes iosPopoverIn {
+      from { opacity: 0; transform: scale(0.96) translateY(-6px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    
+    /* Поле поиска и чекбокс «Выбрать все» */
+    .vscomp-search-container {
+      border-bottom: 1px solid var(--ios-separator) !important;
+      background: transparent !important;
+      height: 42px !important;
+      padding: 0 10px !important;
+      margin-bottom: 4px !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+    .vscomp-search-input {
+      font-size: 0.83rem !important;
+      background: transparent !important;
+      color: var(--ios-text) !important;
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      font-family: var(--ios-font) !important;
+    }
+    .vscomp-search-input::placeholder {
+      color: var(--ios-text-muted) !important;
+      opacity: 1 !important;
+    }
+    .vscomp-toggle-all-button {
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      padding-right: 6px !important;
+    }
+    .vscomp-toggle-all-label {
+      color: var(--ios-text-secondary) !important;
+      font-size: 0.78rem !important;
+      font-weight: 600 !important;
+      margin-left: 4px !important;
+    }
+
+    .vscomp-option {
+      font-size: 0.83rem !important;
+      padding: 7px 12px !important;
+      border-radius: 10px !important;
+      color: var(--ios-text) !important;
+      font-weight: 500 !important;
+      transition: all 0.12s ease !important;
+      margin-bottom: 2px !important;
+    }
+    .vscomp-option.focused, .vscomp-option:hover {
+      background-color: var(--ios-blue-light) !important;
+      color: var(--ios-blue) !important;
+    }
+    .vscomp-option.selected {
+      background-color: var(--ios-blue-light) !important;
+      color: var(--ios-blue) !important;
+      font-weight: 600 !important;
+    }
+    .vscomp-option.selected .vscomp-option-text {
+      color: var(--ios-blue) !important;
+    }
+    [data-theme="dark"] .vscomp-option.selected {
+      background-color: rgba(0, 113, 227, 0.25) !important;
+      color: #2997ff !important;
+    }
+    [data-theme="dark"] .vscomp-option.selected .vscomp-option-text {
+      color: #2997ff !important;
+    }
+    .vscomp-option.selected.focused,
+    .vscomp-option.selected:hover {
+      background-color: rgba(0, 113, 227, 0.35) !important;
+      color: #2997ff !important;
+    }
+    .vscomp-option.selected.focused .vscomp-option-text,
+    .vscomp-option.selected:hover .vscomp-option-text {
+      color: #2997ff !important;
+    }
+    
+    /* Чекбоксы в VirtualSelect (замена фиолетового цвета на Apple Blue) */
+    .vscomp-wrapper .checkbox-icon { 
+      width: 17px !important;
+      height: 17px !important;
+      margin-right: 8px !important;
+    }
+    .vscomp-wrapper .checkbox-icon::after {
+      border: 1.8px solid var(--ios-text-muted) !important;
+      border-radius: 5px !important;
+      box-sizing: border-box !important;
+    }
+    .vscomp-wrapper .checkbox-icon.checked::after,
+    .vscomp-wrapper.multiple .vscomp-option.selected .checkbox-icon::after { 
+      border-color: var(--ios-blue) !important; 
+      border-left-color: transparent !important; 
+      border-top-color: transparent !important; 
+      border-width: 2.2px !important;
+    }
+    .vscomp-options-container {
+      max-height: 260px !important;
+    }
+    .vscomp-options-container::-webkit-scrollbar {
+      width: 6px;
+    }
+    .vscomp-options-container::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .vscomp-options-container::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 9999px;
+    }
+    .vscomp-options-container::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
+    .vscomp-no-options, .vscomp-no-search-results {
+      color: var(--ios-text-muted) !important;
+      font-size: 0.83rem !important;
+      padding: 16px !important;
+      text-align: center;
+    }
+    
+    /* Стандартные селекторы и поля ввода */
+    .input-compact { 
+      height: 36px !important; 
+      font-size: 0.83rem !important; 
+      border-radius: 12px !important; 
+      min-width: 0; 
+      border: 1px solid var(--ios-input-border) !important;
+      background-color: var(--ios-input-bg) !important;
+      color: var(--ios-text) !important;
+      font-family: var(--ios-font) !important;
+      box-shadow: var(--ios-input-shadow) !important;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    .input-compact:focus {
+      border-color: var(--ios-blue) !important;
+      box-shadow: 0 0 0 3.5px var(--ios-blue-light) !important;
+      background-color: var(--ios-input-bg) !important;
+      color: var(--ios-text) !important;
+    }
+    select.input-compact {
+      -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+      appearance: none !important;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%238e8e93' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m4 6 4 4 4-4'/%3e%3c/svg%3e") !important;
+      background-repeat: no-repeat !important;
+      background-position: right 10px center !important;
+      background-size: 12px 8px !important;
+      padding-right: 28px !important;
+      cursor: pointer;
+    }
+    select.input-compact option,
+    .dataTables_wrapper .dataTables_length select option {
+      background-color: var(--glass-dropdown-bg) !important;
+      color: var(--ios-text) !important;
+    }
+    select.input-compact::-ms-expand,
+    .dataTables_wrapper .dataTables_length select::-ms-expand,
+    select.form-select::-ms-expand {
+      display: none !important;
+    }
+    [data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(1) brightness(1.2) !important;
+      opacity: 0.85 !important;
+      cursor: pointer !important;
+    }
+    input[type="date"].input-compact {
+      height: 38px !important;
+      padding: 4px 10px !important;
+      font-size: 0.88rem !important;
+      font-weight: 500;
+      flex: 1 1 0%;
+      min-width: 0;
+    }
+
+    #clear-s-dates,
+    #clear-rec-d-dates,
+    #clear-rec-w-dates {
+      width: 38px !important;
+      min-width: 38px !important;
+      height: 38px !important;
+      padding: 0 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-size: 1rem !important;
+      flex-shrink: 0;
+      border-radius: 10px !important;
+    }
+
+    @media (max-width: 576px) {
+      input[type="date"].input-compact {
+        height: 42px !important;
+        font-size: 0.94rem !important;
+        padding: 6px 10px !important;
+      }
+      #clear-s-dates,
+      #clear-rec-d-dates,
+      #clear-rec-w-dates {
+        width: 42px !important;
+        min-width: 42px !important;
+        height: 42px !important;
+        font-size: 1.15rem !important;
+      }
+    }
+
+    /* Фирменные iOS бейджи и кнопки управления */
+    .badge-ios-pill {
+      background: var(--ios-blue);
+      color: #ffffff;
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 22px;
+      box-shadow: var(--ios-blue-glow);
+    }
+    .badge-access-key {
+      background: var(--ios-amber-light);
+      color: var(--ios-amber);
+      border: 1px solid rgba(255, 149, 0, 0.4);
+      font-size: 0.78rem;
+      font-weight: 700;
+      min-height: 32px;
+      padding: 5px 13px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(255, 149, 0, 0.2);
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+    .btn-analytics-toggle {
+      border-radius: 12px;
+      font-size: 0.81rem;
+      min-height: 36px;
+      height: auto;
+      border: 1px solid rgba(0, 113, 227, 0.35);
+      color: var(--ios-blue);
+      background: var(--ios-blue-light);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 6px 14px;
+      line-height: 1.25;
+      max-width: 100%;
+      text-align: left;
+      font-weight: 600;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      outline: none !important;
+      cursor: pointer;
+    }
+    .shift-markers-hint {
+      font-size: 0.77rem;
+      color: var(--ios-text-secondary);
+      font-weight: 500;
+      background: var(--ios-input-bg);
+      border: 1px solid var(--ios-separator);
+      border-radius: 10px;
+      padding: 6px 12px;
+      line-height: 1.4;
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      max-width: 100%;
+    }
+    .shift-unique-pill {
+      height: 38px;
+      background: var(--ios-input-bg);
+      border: 1px solid var(--ios-input-border);
+      border-radius: 12px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--ios-input-shadow);
+      cursor: pointer;
+      transition: border-color 0.2s ease;
+    }
+    .shift-unique-pill:hover {
+      border-color: var(--ios-blue);
+    }
+    .shift-unique-pill label {
+      margin: 0 !important;
+      font-size: 0.82rem !important;
+      font-weight: 600 !important;
+      color: var(--ios-text) !important;
+      text-transform: none !important;
+      letter-spacing: normal !important;
+      cursor: pointer;
+      user-select: none;
+    }
+    .shift-unique-pill input[type="checkbox"] {
+      margin: 0 !important;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .btn-analytics-toggle:hover {
+      background: rgba(0, 113, 227, 0.2);
+      color: var(--ios-blue-hover);
+      border-color: var(--ios-blue);
+    }
+    .btn-analytics-toggle:active {
+      transform: scale(0.97);
+    }
+    .btn-compact { 
+      height: 36px !important; 
+      padding: 4px 12px !important; 
+      font-size: 0.82rem !important; 
+      border-radius: 12px !important; 
+      font-weight: 600;
+      border: 1px solid var(--ios-input-border) !important;
+      background: var(--ios-input-bg);
+      color: var(--ios-text-muted);
+      box-shadow: var(--ios-input-shadow);
+      transition: all 0.15s ease;
+    }
+    .btn-compact:hover {
+      background: var(--ios-card-bg);
+      color: var(--ios-text);
+      border-color: var(--ios-blue) !important;
+    }
+
+    /* ============================================================
+       5. КАРТОЧКИ KPI / СТАТИСТИКИ (APPLE HEALTH / STOCKS WIDGETS)
+       ============================================================ */
+    .stats-card-box {
+      background: var(--glass-nested-bg);
+      border: 1px solid var(--glass-nested-border);
+      border-radius: 18px;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      box-shadow: var(--glass-nested-shadow);
+      transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .analysis-section-title {
+      color: var(--ios-text);
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0 0 12px;
+    }
+    .analysis-chart-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    .analysis-chart-panel {
+      min-width: 0;
+      background: var(--glass-nested-bg);
+      border: 1px solid var(--glass-nested-border);
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: var(--glass-nested-shadow);
+    }
+    .analysis-chart-title {
+      color: var(--ios-text-secondary);
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin: 0 0 12px;
+    }
+    .analysis-chart-wrap {
+      position: relative;
+      height: 260px;
+    }
+    .analysis-builder {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      align-items: end;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .analysis-empty {
+      color: var(--ios-text-muted);
+      font-size: 0.85rem;
+      padding: 22px 8px;
+      text-align: center;
+    }
+    .analysis-nav-pills {
+      margin-bottom: 20px;
+    }
+    .btn-remi-pill {
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      background: var(--glass-nested-bg);
+      color: var(--ios-text-secondary);
+      border: 1px solid var(--glass-nested-border);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+    .btn-remi-pill:hover {
+      background: var(--ios-blue-light);
+      color: var(--ios-blue);
+      border-color: rgba(0, 113, 227, 0.3);
+      transform: translateY(-1px);
+    }
+    .btn-remi-pill.active {
+      background: var(--ios-blue);
+      color: #ffffff !important;
+      border-color: var(--ios-blue);
+      box-shadow: 0 3px 8px rgba(0, 113, 227, 0.35);
+    }
+    .analysis-section-block {
+      margin-bottom: 28px;
+    }
+    .analysis-section-block:last-child {
+      margin-bottom: 12px;
+    }
+    @media (max-width: 576px) {
+      .analysis-chart-wrap { height: 230px; }
+      .analysis-chart-panel { padding: 12px; }
+    }
+    .analysis-panel-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--ios-separator);
+      user-select: none;
+    }
+    .analysis-panel-title-group {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px 8px;
+      min-width: 0;
+      flex: 1;
+    }
+    .analysis-chart-title {
+      line-height: 1.3;
+    }
+    .analysis-panel-badge {
+      font-weight: 500;
+      font-size: 0.72rem;
+      border-radius: 7px;
+      padding: 3px 8px;
+      background: var(--ios-segmented-track);
+      color: var(--ios-text-secondary);
+      border: 1px solid var(--ios-separator);
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+    .analysis-panel-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .btn-analysis-action {
+      background: var(--ios-input-bg);
+      border: 1px solid var(--ios-input-border);
+      color: var(--ios-text-secondary);
+      border-radius: 9px;
+      min-height: 30px;
+      padding: 4px 10px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+      line-height: 1.25;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+    .btn-analysis-action:hover {
+      background: var(--ios-blue-light);
+      color: var(--ios-blue);
+      border-color: var(--ios-blue);
+    }
+    .btn-analysis-collapse-icon {
+      display: inline-block;
+      transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 0.85rem;
+    }
+    .btn-analysis-collapse-icon.collapsed {
+      transform: rotate(-90deg);
+    }
+    .analysis-panel-footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 10px;
+      margin-top: 8px;
+      border-top: 1px dashed var(--ios-separator);
+    }
+    .btn-analysis-expand-btn {
+      font-size: 0.78rem;
+      padding: 4px 16px;
+      border-radius: 20px;
+      background: var(--glass-nested-bg);
+      color: var(--ios-blue);
+      border: 1px solid var(--ios-blue);
+      font-weight: 600;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .btn-analysis-expand-btn:hover {
+      background: var(--ios-blue);
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(0, 113, 227, 0.25);
+    }
+    .analysis-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.58);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 10050;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      animation: modalFadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .analysis-modal-dialog {
+      background: var(--glass-card-bg);
+      border: 1px solid var(--glass-card-border);
+      border-radius: 20px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+      width: 100%;
+      max-width: 980px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .analysis-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--ios-separator);
+      background: var(--glass-nested-bg);
+    }
+    .analysis-modal-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ios-text);
+      margin: 0;
+    }
+    .analysis-modal-subtitle {
+      font-size: 0.78rem;
+      color: var(--ios-text-muted);
+      margin-top: 2px;
+    }
+    .analysis-modal-close {
+      background: var(--ios-segmented-track);
+      border: 1px solid var(--ios-separator);
+      color: var(--ios-text-secondary);
+      width: 34px;
+      height: 34px;
+      flex-shrink: 0;
+      margin-left: 12px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+      transition: all 0.15s ease;
+    }
+    .analysis-modal-close:hover {
+      background: rgba(255, 59, 48, 0.15);
+      color: #ff3b30;
+      border-color: #ff3b30;
+      transform: scale(1.05);
+    }
+    .analysis-modal-body {
+      padding: 20px 24px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      flex: 1;
+    }
+    .analysis-modal-chart-wrap {
+      position: relative;
+      height: 360px;
+      margin-bottom: 20px;
+    }
+    .analysis-modal-table-wrap {
+      border: 1px solid var(--ios-separator);
+      border-radius: 14px;
+      overflow-x: auto;
+      width: 100%;
+      max-width: 100%;
+      background: var(--glass-nested-bg);
+    }
+    .analysis-modal-table-wrap table,
+    .analysis-modal-table-wrap table.table {
+      width: max-content !important;
+      min-width: 100% !important;
+      font-size: 0.82rem;
+      color: var(--ios-text);
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-bottom: 0 !important;
+    }
+    .analysis-modal-table-wrap th,
+    .analysis-modal-table-wrap td {
+      white-space: nowrap !important;
+      word-break: normal !important;
+      padding: 8px 12px !important;
+      vertical-align: middle !important;
+    }
+    @media (max-width: 576px) {
+      .analysis-modal-body { padding: 14px 14px; }
+      .analysis-modal-header { padding: 12px 14px; }
+      .analysis-modal-chart-wrap { height: 260px; margin-bottom: 14px; }
+    }
+    .analysis-modal-table-wrap th {
+      background: var(--ios-segmented-track);
+      color: var(--ios-text-secondary);
+      font-weight: 600;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--ios-separator);
+      text-align: left;
+    }
+    .analysis-modal-table-wrap td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--ios-separator);
+    }
+    .analysis-modal-table-wrap tr:hover td {
+      background: var(--ios-blue-light);
+    }
+    .stat-pill-box {
+      border-radius: 14px;
+      padding: 11px 15px;
+      text-align: left;
+      border: 1px solid transparent;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 2px 6px rgba(0, 0, 0, 0.04);
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      min-width: 140px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .stat-pill-val { 
+      font-size: 1.3rem; 
+      font-weight: 800; 
+      line-height: 1.1; 
+      margin-top: 3px; 
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.03em;
+    }
+    .stat-pill-title { 
+      font-size: 0.72rem !important; 
+      font-weight: 700 !important; 
+      text-transform: uppercase !important; 
+      letter-spacing: 0.05em !important; 
+      white-space: nowrap !important;
+      line-height: 1.2 !important;
+      color: var(--ios-text-secondary) !important;
+      display: block !important;
+    }
+    [data-theme="dark"] .stat-pill-title,
+    [data-theme="dark"] .stat-pill-title.text-muted {
+      color: #e4e4e7 !important;
+    }
+    [data-theme="dark"] .text-muted {
+      color: #a1a1aa !important;
+    }
+
+    .btn-mode-toggle,
+    .btn-compare-submode {
+      border-radius: 10px !important;
+      font-size: 0.8rem !important;
+      font-weight: 600 !important;
+      padding: 6px 13px !important;
+      min-height: 35px !important;
+      height: auto !important;
+      border: 1px solid rgba(0, 113, 227, 0.35) !important;
+      color: var(--ios-blue) !important;
+      background: var(--ios-input-bg) !important;
+      white-space: nowrap !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 5px !important;
+      transition: all 0.2s ease;
+    }
+    .btn-mode-toggle:hover:not(.active),
+    .btn-compare-submode:hover:not(.active) {
+      background: var(--ios-blue-light) !important;
+      border-color: var(--ios-blue) !important;
+    }
+    .btn-mode-toggle.active,
+    .btn-compare-submode.active {
+      background: var(--ios-blue) !important;
+      border-color: var(--ios-blue) !important;
+      color: #ffffff !important;
+      box-shadow: var(--ios-blue-glow) !important;
+    }
+    .stats-card-box .btn-group,
+    #rec-w-compare-grouping-bar .btn-group {
+      display: inline-flex !important;
+      flex-wrap: wrap !important;
+      gap: 6px !important;
+      max-width: 100% !important;
+    }
+    .stats-card-box .btn-group > .btn,
+    #rec-w-compare-grouping-bar .btn-group > .btn {
+      margin-left: 0 !important;
+      border-radius: 10px !important;
+    }
+
+    /* ============================================================
+       6. ТАБЛИЦЫ (APPLE GROUPED GLASS TABLE)
+       ============================================================ */
+    .table-responsive {
+      border-radius: 18px;
+      border: 1px solid var(--glass-nested-border);
+      background: var(--glass-nested-bg);
+      margin-bottom: 10px;
+      box-shadow: var(--glass-nested-shadow);
+      overflow-x: auto !important;
+      overflow-y: hidden;
+      position: relative;
+      z-index: 10;
+      max-width: 100%;
+      transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .table-responsive::-webkit-scrollbar {
+      height: 7px;
+      width: 7px;
+    }
+    .table-responsive::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .table-responsive::-webkit-scrollbar-thumb {
+      background: var(--ios-text-muted);
+      border-radius: 9999px;
+      opacity: 0.4;
+    }
+
+    .table,
+    table.table,
+    table.dataTable {
+      margin-bottom: 0 !important;
+      border-collapse: separate;
+      border-spacing: 0;
+      width: max-content !important;
+      min-width: 100% !important;
+      max-width: none !important;
+      background: transparent !important;
+    }
+
+    .table thead th { 
+      background: var(--table-header-bg) !important; 
+      color: var(--table-header-text) !important; 
+      font-weight: 600 !important; 
+      font-size: 0.81rem !important; 
+      letter-spacing: -0.01em !important;
+      text-transform: none !important;
+      vertical-align: middle !important;
+      padding: 12px 16px !important;
+      border: none !important;
+      white-space: nowrap !important;
+      min-width: 40px;
+      overflow: visible !important;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    .table thead th:first-child {
+      padding-left: 18px !important;
+    }
+    .table thead th:last-child {
+      padding-right: 20px !important;
+    }
+    table.dataTable thead > tr > th.sorting,
+    table.dataTable thead > tr > th.sorting_asc,
+    table.dataTable thead > tr > th.sorting_desc {
+      padding-right: 34px !important;
+    }
+    table.dataTable thead > tr > th.sorting:last-child,
+    table.dataTable thead > tr > th.sorting_asc:last-child,
+    table.dataTable thead > tr > th.sorting_desc:last-child {
+      padding-right: 36px !important;
+    }
+
+    .table tbody td { 
+      vertical-align: middle !important; 
+      font-size: 0.82rem !important; 
+      border-bottom: 1px solid var(--ios-separator) !important; 
+      border-top: none !important;
+      border-left: none !important;
+      border-right: none !important;
+      padding: 10px 14px !important;
+      color: var(--ios-text);
+      background: transparent !important;
+      word-break: break-word;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .table tbody td:first-child:not(.dtr-control) {
+      padding-left: 18px !important;
+    }
+    .table tbody td:last-child {
+      padding-right: 18px !important;
+    }
+    .table-hover tbody tr {
+      transition: background-color 0.15s ease;
+    }
+    .table-hover tbody tr:hover { 
+      background-color: var(--table-hover-bg) !important; 
+    }
+    .table tbody tr:nth-child(even) {
+      background-color: rgba(255, 255, 255, 0.015) !important;
+    }
+    
+    /* ============================================================
+       МИНИМАЛИСТИЧНЫЙ ШЕВРОН РАСКРЫТИЯ СТРОКИ (APPLE SF CHEVRON, БЕЗ КРУГА)
+       ============================================================ */
+    td.dtr-control,
+    th.dtr-control,
+    td.dtr-control.text-center,
+    th.dtr-control.text-center,
+    table.dataTable tbody td.dtr-control,
+    table.dataTable tbody td.dtr-control.text-center,
+    table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control,
+    table.dataTable.dtr-inline.collapsed > tbody > tr > th.dtr-control,
+    table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control.text-center {
+      position: relative !important;
+      padding-left: 30px !important;
+      white-space: nowrap !important;
+      min-width: 44px !important;
+      text-align: left !important;
+    }
+    table.dataTable thead th:first-child,
+    table.dataTable thead th.dtr-control {
+      min-width: 44px !important;
+      white-space: nowrap !important;
+      padding-left: 30px !important;
+    }
+    table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control:before, 
+    table.dataTable.dtr-inline.collapsed > tbody > tr > th.dtr-control:before { 
+      content: "" !important;
+      position: absolute !important;
+      top: 50% !important;
+      left: 10px !important;
+      transform: translateY(-50%) rotate(0deg) !important;
+      margin-top: 0 !important;
+      height: 12px !important;
+      width: 12px !important;
+      border-radius: 0 !important;
+      border: none !important;
+      background-color: transparent !important;
+      box-shadow: none !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      
+      /* Изящный векторный шеврон Apple (›) в цвет приглушенного текста */
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M6 3.5l4.5 4.5L6 12.5'/%3E%3C/svg%3E") !important;
+      background-repeat: no-repeat !important;
+      background-position: center !important;
+      background-size: 8px 10px !important;
+      opacity: 0.65 !important;
+      
+      cursor: pointer !important;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                  opacity 0.15s ease !important;
+    }
+    
+    /* Темная тема: шеврон в цвет второстепенного текста */
+    [data-theme="dark"] table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control:before,
+    [data-theme="dark"] table.dataTable.dtr-inline.collapsed > tbody > tr > th.dtr-control:before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%2398989d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M6 3.5l4.5 4.5L6 12.5'/%3E%3C/svg%3E") !important;
+      opacity: 0.7 !important;
+    }
+    
+    /* Hover: строка подсвечивается, шеврон становится ярче */
+    table.dataTable.dtr-inline.collapsed > tbody > tr:hover > td.dtr-control:before {
+      opacity: 1 !important;
+      transform: translateY(-50%) translateX(1px) !important;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%230071e3' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' d='M6 3.5l4.5 4.5L6 12.5'/%3E%3C/svg%3E") !important;
+    }
+    [data-theme="dark"] table.dataTable.dtr-inline.collapsed > tbody > tr:hover > td.dtr-control:before {
+      opacity: 1 !important;
+      transform: translateY(-50%) translateX(1px) !important;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23409cff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' d='M6 3.5l4.5 4.5L6 12.5'/%3E%3C/svg%3E") !important;
+    }
+
+    /* Раскрытое состояние (tr.parent): шеврон плавно поворачивается вниз (⌄) */
+    table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td.dtr-control:before, 
+    table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th.dtr-control:before { 
+      transform: translateY(-50%) rotate(90deg) !important;
+      opacity: 1 !important;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%230071e3' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' d='M6 3.5l4.5 4.5L6 12.5'/%3E%3C/svg%3E") !important;
+    }
+    [data-theme="dark"] table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td.dtr-control:before, 
+    [data-theme="dark"] table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th.dtr-control:before { 
+      transform: translateY(-50%) rotate(90deg) !important;
+      opacity: 1 !important;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23409cff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' d='M6 3.5l4.5 4.5L6 12.5'/%3E%3C/svg%3E") !important;
+    }
+
+    /* Раскрывающаяся строка с деталями (+) во всех таблицах */
+    table.dataTable > tbody > tr.child > td.child {
+      padding: 10px 14px !important;
+      background: transparent !important;
+      max-width: 0 !important;
+      overflow: hidden !important;
+    }
+    table.dataTable > tbody > tr.child {
+      width: 100% !important;
+    }
+    table.dataTable > tbody > tr.child:hover {
+      background: transparent !important;
+    }
+    ul.dtr-details {
+      list-style-type: none !important;
+      padding: 14px 18px !important;
+      margin: 6px 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      background: var(--glass-nested-bg) !important;
+      border-radius: 16px !important;
+      border: 1px solid var(--glass-nested-border) !important;
+      box-shadow: var(--glass-nested-shadow) !important;
+    }
+    ul.dtr-details > li {
+      border-bottom: 1px solid var(--ios-separator) !important;
+      padding: 8px 0 !important;
+      display: flex !important;
+      align-items: flex-start !important;
+      justify-content: flex-start !important;
+      font-size: 0.82rem !important;
+    }
+    ul.dtr-details > li:last-child {
+      border-bottom: none !important;
+    }
+    ul.dtr-details .dtr-title {
+      font-weight: 600 !important;
+      min-width: 150px !important;
+      color: var(--ios-text-secondary) !important;
+      margin-right: 12px !important;
+      flex-shrink: 0 !important;
+    }
+    ul.dtr-details .dtr-data {
+      color: var(--ios-text) !important;
+      font-weight: 500 !important;
+      word-break: break-word !important;
+      flex: 1 !important;
+    }
+
+    th.col-narrow, td.col-narrow { 
+      min-width: 35px; 
+      white-space: nowrap !important; 
+      text-align: center; 
+      line-height: 1.25; 
+    }
+    
+    /* ============================================================
+       7. ИСПРАВЛЕННЫЕ СТИЛИ БЕЙДЖЕЙ И ССЫЛОК 2GIS
+       ============================================================ */
+    .priority-badge { 
+      min-width: 28px;
+      height: 26px;
+      padding: 0 10px;
+      border-radius: 9999px; 
+      font-weight: 700; 
+      font-size: 0.76rem; 
+      display: inline-flex !important; 
+      align-items: center !important;
+      justify-content: center !important;
+      letter-spacing: 0.02em;
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+    }
+    .bg-red { 
+      background-color: var(--ios-red-light) !important; 
+      color: var(--ios-red) !important; 
+      border: 1px solid rgba(255, 59, 48, 0.4) !important;
+    }
+    .bg-yellow { 
+      background-color: var(--ios-amber-light) !important; 
+      color: var(--ios-amber) !important; 
+      border: 1px solid rgba(255, 149, 0, 0.4) !important;
+    }
+    .bg-green { 
+      background-color: var(--ios-green-light) !important; 
+      color: var(--ios-green) !important; 
+      border: 1px solid rgba(52, 199, 89, 0.4) !important;
+    }
+    .bg-gray { 
+      background-color: rgba(142, 142, 147, 0.18) !important; 
+      color: var(--ios-text-muted) !important; 
+      border: 1px solid rgba(142, 142, 147, 0.3) !important;
+    }
+    
+    .badge-worked {
+      font-size: 0.72rem;
+      padding: 3px 9px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 4px;
+      font-weight: 600;
+      white-space: nowrap;
+      background-color: var(--ios-green-light);
+      color: var(--ios-green);
+      border: 1px solid rgba(52, 199, 89, 0.35);
+      box-shadow: 0 1px 3px rgba(52, 199, 89, 0.15);
+    }
+    .badge-worked.badge-worked-both {
+      background-color: var(--ios-green-light);
+      color: var(--ios-green);
+      border: 1px solid rgba(52, 199, 89, 0.4);
+    }
+    .badge-worked.badge-worked-phone {
+      background-color: var(--ios-blue-light);
+      color: var(--ios-blue);
+      border: 1px solid rgba(0, 113, 227, 0.35);
+      box-shadow: 0 1px 3px rgba(0, 113, 227, 0.15);
+    }
+    .badge-worked.badge-worked-fio {
+      background-color: var(--ios-purple-light);
+      color: var(--ios-purple);
+      border: 1px solid rgba(175, 82, 222, 0.35);
+      box-shadow: 0 1px 3px rgba(175, 82, 222, 0.15);
+    }
+
+    /* ИСПРАВЛЕННАЯ ССЫЛКА 2GIS: ЧИСТЫЙ ТЕКСТ БЕЗ ГРОМОЗДКОГО СИНЕГО БЛОКА */
+    .link-2gis {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--ios-blue) !important;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      transition: color 0.15s ease;
+      word-break: break-word;
+      line-height: 1.35;
+    }
+    .link-2gis:hover {
+      color: var(--ios-blue-hover) !important;
+      text-decoration: underline !important;
+    }
+
+    /* ============================================================
+       8. ПАГИНАЦИЯ И ПОИСК DATATABLES (ВЫСОКАЯ КОНТРАСТНОСТЬ)
+       ============================================================ */
+    .dataTables_wrapper {
+      color: var(--ios-text) !important;
+      width: 100% !important;
+    }
+    .dataTables_wrapper > .row:first-child {
+      align-items: center !important;
+      padding: 12px 18px !important;
+      margin: 0 !important;
+      row-gap: 10px;
+    }
+    .dataTables_wrapper > .row:first-child > [class*="col-"] {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+    .dataTables_wrapper .dataTables_length {
+      padding: 0 !important;
+      margin: 0 !important;
+      color: var(--ios-text) !important;
+      font-size: 0.82rem !important;
+      font-weight: 500 !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+    .dataTables_wrapper .dataTables_length label {
+      display: inline-flex !important;
+      align-items: center !important;
+      margin-bottom: 0 !important;
+      font-weight: 500 !important;
+    }
+    .dataTables_wrapper .dataTables_filter {
+      padding: 0 !important;
+      margin: 0 !important;
+      color: var(--ios-text) !important;
+      font-size: 0.82rem !important;
+      font-weight: 500 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-end !important;
+    }
+    .dataTables_wrapper .dataTables_length select,
+    .dataTables_wrapper .dataTables_length select.form-select {
+      -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+      appearance: none !important;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%238e8e93' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m4 6 4 4 4-4'/%3e%3c/svg%3e") !important;
+      background-repeat: no-repeat !important;
+      background-position: right 10px center !important;
+      background-size: 11px 7px !important;
+      border: 1px solid var(--ios-input-border) !important;
+      background-color: var(--ios-input-bg) !important;
+      color: var(--ios-text) !important;
+      border-radius: 12px !important;
+      padding: 4px 28px 4px 12px !important;
+      font-size: 0.82rem !important;
+      height: 35px !important;
+      outline: none !important;
+      margin: 0 6px !important;
+      min-width: 68px !important;
+      box-shadow: var(--ios-input-shadow) !important;
+      cursor: pointer;
+    }
+    .dataTables_wrapper .dataTables_filter label {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      color: var(--ios-text-secondary) !important;
+      font-weight: 600 !important;
+      margin-bottom: 0 !important;
+    }
+    .dataTables_wrapper .dataTables_filter input {
+      border: 1px solid var(--ios-input-border) !important;
+      background: var(--ios-input-bg) !important;
+      color: var(--ios-text) !important;
+      border-radius: 12px !important;
+      padding: 5px 14px !important;
+      font-size: 0.82rem !important;
+      height: 35px !important;
+      outline: none !important;
+      margin-left: 0 !important;
+      min-width: 200px !important;
+      box-shadow: var(--ios-input-shadow) !important;
+      transition: all 0.2s ease !important;
+    }
+    .dataTables_wrapper .dataTables_filter input::placeholder {
+      color: var(--ios-text-muted) !important;
+      opacity: 1 !important;
+    }
+    .dataTables_wrapper .dataTables_filter input:focus,
+    .dataTables_wrapper .dataTables_length select:focus {
+      border-color: var(--ios-blue) !important;
+      box-shadow: 0 0 0 3.5px var(--ios-blue-light) !important;
+    }
+    .dataTables_wrapper .dataTables_info {
+      font-size: 0.82rem !important;
+      color: var(--ios-text-secondary) !important;
+      font-weight: 500 !important;
+      padding: 12px 18px 16px 18px !important;
+    }
+    .dataTables_wrapper .dataTables_paginate {
+      padding: 10px 18px 16px 18px !important;
+    }
+    .dataTables_wrapper .page-item.active .page-link {
+      background: var(--ios-blue) !important;
+      border-color: var(--ios-blue) !important;
+      color: #ffffff !important;
+      font-weight: 700 !important;
+      box-shadow: var(--ios-blue-glow) !important;
+    }
+    .dataTables_wrapper .page-link {
+      background: var(--ios-input-bg);
+      color: var(--ios-text);
+      font-size: 0.82rem !important;
+      border-radius: 10px !important;
+      margin: 0 3px !important;
+      border: 1px solid var(--ios-input-border) !important;
+      box-shadow: var(--ios-input-shadow) !important;
+      transition: all 0.15s ease !important;
+    }
+    .dataTables_wrapper .page-link:hover {
+      background: var(--ios-card-bg) !important;
+      color: var(--ios-blue) !important;
+      border-color: var(--ios-blue) !important;
+    }
+    .dataTables_wrapper .page-item.disabled .page-link {
+      background: transparent !important;
+      color: var(--ios-text-muted) !important;
+      opacity: 0.38 !important;
+      border-color: var(--ios-input-border) !important;
+      box-shadow: none !important;
+    }
+
+    /* === ПРЕЛОАДЕР === */
+    .loader-container { 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      height: 26vh; 
+      text-align: center; 
+      flex-direction: column; 
+    }
+    .loader-spinner {
+      width: 2.4rem;
+      height: 2.4rem;
+      border-width: 0.24em;
+      color: var(--ios-blue) !important;
+    }
+    .loader-text {
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--ios-text-muted);
+      margin-top: 12px;
+      letter-spacing: -0.01em;
+    }
+ 
+    /* ============================================================
+       8.5 РУЧНОЕ ИЗМЕНЕНИЕ ШИРИНЫ СТОЛБЦОВ (COL RESIZE) С СОХРАНЕНИЕМ
+       ============================================================ */
+    th.resizable-th {
+      position: relative !important;
+      user-select: none;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      min-width: 25px !important;
+    }
+    .col-resizer {
+      position: absolute !important;
+      top: 0 !important;
+      right: 0 !important;
+      width: 16px !important;
+      height: 100% !important;
+      cursor: col-resize !important;
+      z-index: 25 !important;
+      touch-action: none !important;
+    }
+    th:last-child > .col-resizer {
+      right: 0 !important;
+    }
+    .col-resizer::after {
+      content: '';
+      position: absolute;
+      top: 18%;
+      bottom: 18%;
+      right: 1px;
+      width: 2px;
+      background: rgba(255, 255, 255, 0.38);
+      border-radius: 1px;
+      transition: background 0.15s ease, width 0.15s ease;
+    }
+    th:last-child > .col-resizer::after {
+      right: 1px;
+    }
+    [data-theme="light"] .col-resizer::after {
+      background: rgba(255, 255, 255, 0.42);
+    }
+    .col-resizer:hover::after,
+    .col-resizer.resizing::after {
+      background: var(--ios-blue) !important;
+      width: 3px !important;
+      top: 6% !important;
+      bottom: 6% !important;
+      box-shadow: var(--ios-blue-glow);
+    }
+    body.col-resizing-active,
+    body.col-resizing-active * {
+      cursor: col-resize !important;
+      user-select: none !important;
+      touch-action: none !important;
+    }
+    body:not(.col-resize-enabled) .col-resizer {
+      display: none !important;
+      pointer-events: none !important;
+    }
+
+    /* ============================================================
+       9. АДАПТИВНОСТЬ ДЛЯ ПЛАНШЕТОВ И МОБИЛЬНЫХ УСТРОЙСТВ
+       ============================================================ */
+    @media (max-width: 768px) {
+      .col-resizer {
+        width: 22px !important;
+        right: 0 !important;
+        touch-action: none !important;
+      }
+      th:last-child > .col-resizer {
+        right: 0 !important;
+        width: 20px !important;
+      }
+      .col-resizer::after {
+        right: 2px !important;
+        width: 3px !important;
+        background: rgba(255, 255, 255, 0.45) !important;
+      }
+      th:last-child > .col-resizer::after {
+        right: 2px !important;
+      }
+      .col-resizer:hover::after,
+      .col-resizer.resizing::after {
+        background: var(--ios-blue) !important;
+        width: 3px !important;
+      }
+      .container-fluid {
+        padding: 10px 10px !important;
+      }
+      .app-header-bar {
+        padding: 12px 12px !important;
+        border-radius: 18px !important;
+        gap: 10px !important;
+      }
+      .header-controls-bar {
+        width: 100%;
+        gap: 8px !important;
+      }
+      .header-utility-buttons {
+        width: 100%;
+        gap: 6px !important;
+      }
+      .btn-refresh-app {
+        padding: 0 10px !important;
+        font-size: 0.78rem !important;
+        height: 34px !important;
+      }
+      .btn-reset-widths,
+      .btn-toggle-col-resize,
+      .btn-portal-auth {
+        padding: 0 9px !important;
+        font-size: 0.78rem !important;
+        height: 34px !important;
+      }
+      .nav-segmented {
+        width: 100%;
+        padding: 3px 6px 3px 3px;
+      }
+      .nav-segmented .nav-link {
+        padding: 5px 11px;
+        font-size: 0.78rem;
+      }
+      .card-main {
+        padding: 14px 12px !important;
+        border-radius: 18px !important;
+      }
+      .filters-wrapper {
+        padding: 12px 12px !important;
+      }
+      .stats-card-box {
+        padding: 12px 12px !important;
+      }
+      .stat-pill-box {
+        flex: 1 1 calc(50% - 6px);
+        min-width: 130px;
+      }
+      .dataTables_wrapper > .row:first-child {
+        padding: 10px 12px !important;
+      }
+      .dataTables_wrapper .dataTables_length,
+      .dataTables_wrapper .dataTables_filter {
+        padding: 0 !important;
+        justify-content: flex-start !important;
+        text-align: left !important;
+      }
+      .dataTables_wrapper .dataTables_filter label {
+        width: 100% !important;
+      }
+      .dataTables_wrapper .dataTables_filter input {
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+      .dataTables_wrapper .dataTables_info,
+      .dataTables_wrapper .dataTables_paginate {
+        padding: 10px 12px !important;
+        text-align: center !important;
+      }
+      .dataTables_wrapper .dataTables_paginate ul.pagination {
+        justify-content: center !important;
+        flex-wrap: wrap !important;
+      }
+      .analysis-panel-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+      .analysis-panel-actions {
+        justify-content: flex-end;
+      }
+    }
+    @media (max-width: 576px) {
+      .nav-sub-pills {
+        width: 100%;
+        display: flex;
+      }
+      .nav-sub-pills .nav-link {
+        flex: 1;
+        padding: 6px 8px;
+        font-size: 0.76rem;
+      }
+      .btn-mode-toggle,
+      .btn-compare-submode {
+        flex: 1 1 calc(50% - 6px);
+        font-size: 0.76rem !important;
+        padding: 6px 8px !important;
+      }
+      .cards-actions-bar {
+        width: 100%;
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+        gap: 6px !important;
+      }
+      .cards-actions-bar button {
+        width: 100%;
+        min-height: 38px;
+        height: auto !important;
+        justify-content: center;
+        text-align: center;
+        font-size: 0.75rem;
+        line-height: 1.2;
+        padding: 6px 8px;
+      }
+      .mode-switch-wrap {
+        width: 100%;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 6px !important;
+      }
+      #rec-w-compare-grouping-bar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 6px !important;
+      }
+    }
+
+    /* ============================================================
+       10. МОБИЛЬНЫЙ РЕЖИМ КАРТОЧЕК-ЗАДАЧ И ЭКСПОРТ В PDF
+       ============================================================ */
+    .btn-export-pdf,
+    .btn-copy-all {
+      background: var(--ios-input-bg);
+      border: 1px solid var(--ios-input-border);
+      color: var(--ios-blue);
+      height: 36px;
+      padding: 0 14px;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: var(--ios-input-shadow);
+      cursor: pointer;
+      user-select: none;
+    }
+    .btn-copy-all {
+      color: var(--ios-text);
+    }
+    .btn-export-pdf:hover,
+    .btn-copy-all:hover {
+      transform: translateY(-1px);
+      background: var(--ios-blue-light);
+      border-color: var(--ios-blue);
+      color: var(--ios-blue-hover);
+    }
+    .btn-export-pdf:active,
+    .btn-copy-all:active {
+      transform: scale(0.96);
+    }
+    .btn-copy-all.copied {
+      border-color: var(--ios-green) !important;
+      background: var(--ios-green-light) !important;
+      color: var(--ios-green) !important;
+    }
+
+    .select-cards-sort {
+      background: var(--ios-input-bg);
+      border: 1px solid var(--ios-input-border);
+      color: var(--ios-text);
+      height: 36px;
+      padding: 0 10px;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      box-shadow: var(--ios-input-shadow);
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .select-cards-sort:focus {
+      border-color: var(--ios-blue);
+    }
+
+    .cards-grid-container {
+      display: grid !important;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)) !important;
+      gap: 16px !important;
+      margin-top: 14px !important;
+    }
+    @media (max-width: 576px) {
+      .cards-grid-container {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+      }
+    }
+    .task-card {
+      background: var(--glass-nested-bg) !important;
+      border: 1px solid var(--glass-nested-border) !important;
+      border-radius: 18px !important;
+      box-shadow: var(--glass-nested-shadow) !important;
+      padding: 16px 18px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 12px !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+      overflow: hidden !important;
+      position: relative !important;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease !important;
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
+    }
+    .task-card-header > div:first-child {
+      min-width: 0;
+      flex: 1;
+    }
+    .task-card:hover {
+      transform: translateY(-2px) !important;
+      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.25) !important;
+      border-color: rgba(0, 113, 227, 0.4) !important;
+    }
+    .task-card.card-selected {
+      border-color: rgba(0, 113, 227, 0.45) !important;
+    }
+    .task-card.card-unselected {
+      opacity: 0.52;
+      border-color: var(--ios-separator) !important;
+      filter: grayscale(0.25);
+    }
+    .task-card.card-unselected:hover {
+      opacity: 0.88;
+      filter: none;
+    }
+    .task-card-checkbox-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      cursor: pointer;
+      user-select: none;
+      margin: 0;
+      padding: 2px 2px 2px 0;
+      flex-shrink: 0;
+    }
+    .task-card-checkbox {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+      margin: 0;
+    }
+    .task-card-checkmark {
+      width: 22px;
+      height: 22px;
+      background-color: var(--ios-input-bg);
+      border: 2px solid var(--ios-input-border);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    }
+    .task-card-checkbox-label:hover .task-card-checkmark {
+      border-color: var(--ios-blue);
+      box-shadow: 0 0 0 3px var(--ios-blue-light);
+    }
+    .task-card-checkbox:checked ~ .task-card-checkmark {
+      background-color: var(--ios-blue);
+      border-color: var(--ios-blue);
+    }
+    .task-card-checkmark:after {
+      content: "";
+      display: none;
+      width: 6px;
+      height: 11px;
+      border: solid #ffffff;
+      border-width: 0 2.2px 2.2px 0;
+      transform: rotate(45deg) translate(-1px, -1px);
+    }
+    .task-card-checkbox:checked ~ .task-card-checkmark:after {
+      display: block;
+    }
+    [data-theme="dark"] .task-card-checkmark {
+      background-color: #2c2c2e;
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+    [data-theme="dark"] .task-card-checkmark:after {
+      border-color: #ffffff;
+    }
+    [data-theme="dark"] .task-card-checkbox:checked ~ .task-card-checkmark {
+      background-color: var(--ios-blue);
+      border-color: var(--ios-blue);
+    }
+    [data-theme="dark"] .task-card.card-selected {
+      border-color: rgba(41, 151, 255, 0.5) !important;
+      box-shadow: 0 4px 18px rgba(0, 113, 227, 0.18) !important;
+    }
+    [data-theme="dark"] .task-card.card-unselected {
+      opacity: 0.42;
+    }
+    #cards-selected-badge {
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: var(--ios-blue-light);
+      color: var(--ios-blue);
+      border: 1px solid rgba(0, 113, 227, 0.3);
+      transition: all 0.2s ease;
+    }
+    [data-theme="dark"] #cards-selected-badge {
+      background: rgba(0, 113, 227, 0.2);
+      color: #2997ff;
+      border-color: rgba(41, 151, 255, 0.35);
+    }
+    .task-card-header {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: flex-start !important;
+      gap: 10px !important;
+    }
+    .task-card-store-badge {
+      font-size: 0.82rem !important;
+      font-weight: 700 !important;
+      background: var(--ios-blue-light) !important;
+      color: var(--ios-blue) !important;
+      padding: 4px 10px !important;
+      border-radius: 10px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 4px !important;
+    }
+    [data-theme="dark"] .task-card-store-badge {
+      background: rgba(0, 113, 227, 0.2) !important;
+      color: #2997ff !important;
+    }
+    .task-card-city-fmt {
+      font-size: 0.82rem !important;
+      color: var(--ios-text-secondary) !important;
+      margin-top: 4px !important;
+      font-weight: 600 !important;
+    }
+    .task-card-badges {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-end !important;
+      gap: 4px !important;
+      flex-shrink: 0 !important;
+      white-space: nowrap !important;
+    }
+    .task-card-title {
+      font-size: 1.2rem !important;
+      font-weight: 700 !important;
+      color: var(--ios-text) !important;
+      line-height: 1.3 !important;
+      margin-bottom: 2px !important;
+    }
+    .task-card-address {
+      font-size: 0.84rem !important;
+      color: var(--ios-text-secondary) !important;
+    }
+    .task-card-address a {
+      color: var(--ios-blue) !important;
+      text-decoration: none !important;
+      transition: opacity 0.15s !important;
+      font-weight: 500 !important;
+    }
+    .task-card-address a:hover {
+      text-decoration: underline !important;
+    }
+    .task-card-info-row {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 8px !important;
+      background: var(--ios-input-bg) !important;
+      border: 1px solid var(--ios-input-border) !important;
+      border-radius: 12px !important;
+      padding: 10px 12px !important;
+      font-size: 0.82rem !important;
+    }
+    .task-info-item {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: flex-start !important;
+      gap: 10px !important;
+    }
+    .task-info-label {
+      font-size: 0.74rem !important;
+      font-weight: 600 !important;
+      color: var(--ios-text-muted) !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.03em !important;
+      flex-shrink: 0 !important;
+      white-space: nowrap !important;
+    }
+    .task-info-val {
+      font-weight: 600 !important;
+      color: var(--ios-text) !important;
+      text-align: right !important;
+      word-break: break-word !important;
+      white-space: pre-line !important;
+      line-height: 1.35 !important;
+    }
+    .task-card-pay-box {
+      background: rgba(52, 199, 89, 0.12) !important;
+      border: 1px solid rgba(52, 199, 89, 0.28) !important;
+      border-radius: 12px !important;
+      padding: 10px 14px !important;
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+    }
+    .task-pay-level {
+      font-size: 0.8rem !important;
+      font-weight: 600 !important;
+      color: var(--ios-text-secondary) !important;
+    }
+    .task-pay-amount {
+      font-size: 1.15rem !important;
+      font-weight: 800 !important;
+      color: var(--ios-green) !important;
+      font-variant-numeric: tabular-nums !important;
+    }
+    .task-card-actions {
+      display: flex !important;
+      gap: 8px !important;
+      margin-top: 4px !important;
+    }
+    .btn-card-copy {
+      flex: 1 !important;
+      background: var(--ios-input-bg) !important;
+      border: 1px solid var(--ios-input-border) !important;
+      color: var(--ios-text) !important;
+      font-size: 0.82rem !important;
+      font-weight: 600 !important;
+      padding: 8px 12px !important;
+      border-radius: 10px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 6px !important;
+      cursor: pointer !important;
+      transition: all 0.15s ease !important;
+    }
+    .btn-card-copy:hover {
+      border-color: var(--ios-blue) !important;
+      color: var(--ios-blue) !important;
+      background: var(--ios-blue-light) !important;
+    }
+    .btn-card-copy.copied {
+      border-color: var(--ios-green) !important;
+      background: var(--ios-green-light) !important;
+      color: var(--ios-green) !important;
+    }
+    .btn-card-toggle-details {
+      background: var(--ios-input-bg) !important;
+      border: 1px solid var(--ios-input-border) !important;
+      color: var(--ios-text-secondary) !important;
+      font-size: 0.82rem !important;
+      font-weight: 600 !important;
+      padding: 8px 12px !important;
+      border-radius: 10px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 4px !important;
+      cursor: pointer !important;
+      transition: all 0.15s ease !important;
+    }
+    .btn-card-toggle-details:hover {
+      color: var(--ios-text) !important;
+      border-color: var(--ios-text-muted) !important;
+    }
+    .task-card-details {
+      display: none;
+      background: var(--ios-input-bg) !important;
+      border: 1px solid var(--ios-input-border) !important;
+      border-radius: 12px !important;
+      padding: 10px 14px !important;
+      font-size: 0.8rem !important;
+      margin-top: 4px !important;
+    }
+    .task-card-details-item {
+      display: flex !important;
+      justify-content: space-between !important;
+      padding: 6px 0 !important;
+      border-bottom: 1px solid var(--ios-separator) !important;
+      gap: 10px !important;
+    }
+    .task-card-details-item:last-child {
+      border-bottom: none !important;
+    }
+    .task-details-label {
+      color: var(--ios-text-secondary) !important;
+      font-weight: 500 !important;
+      flex-shrink: 0 !important;
+    }
+    .task-details-val {
+      font-weight: 600 !important;
+      color: var(--ios-text) !important;
+      text-align: right !important;
+      word-break: break-word !important;
+    }
+
+    /* === СТИЛИ ПЕЧАТИ И ЭКСПОРТА В PDF (ВЫСОКИЙ КОНТРАСТ В ЛЮБОЙ ТЕМЕ) === */
+    @media print {
+      @page {
+        margin: 8mm 8mm 8mm 8mm;
+        size: auto;
+      }
+      :root, [data-theme="dark"], [data-theme="light"], html, body {
+        --ios-text: #111827 !important;
+        --ios-text-secondary: #374151 !important;
+        --ios-text-muted: #4b5563 !important;
+        --ios-input-bg: #f8fafc !important;
+        --ios-input-border: #cbd5e1 !important;
+        --glass-nested-bg: #ffffff !important;
+        --glass-nested-border: #cbd5e1 !important;
+        color-scheme: light !important;
+        background: #ffffff !important;
+        color: #111827 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      /* Убираем ссылки и их URL внизу страниц при печати */
+      a, a:visited {
+        text-decoration: none !important;
+        color: inherit !important;
+      }
+      a[href]:after {
+        content: none !important;
+      }
+      .app-header-bar,
+      .btn-refresh-app,
+      .btn-reset-widths,
+      .btn-toggle-col-resize,
+      .ios-theme-toggle,
+      .nav-segmented,
+      #cards-filters-box,
+      .btn-export-pdf,
+      .btn-copy-all,
+      .btn-card-copy,
+      .btn-card-toggle-details,
+      .badge-access-key,
+      #cards-count-badge,
+      #cards-selected-badge,
+      .task-card-checkbox-label,
+      .select-cards-sort,
+      .task-card-actions {
+        display: none !important;
+      }
+      .task-card.card-unselected {
+        display: none !important;
+      }
+      .card-main {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        background: transparent !important;
+      }
+      /* Печать такими же карточками (сетка из 2 колонок) */
+      .cards-grid-container {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      .task-card {
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: none !important;
+        margin-bottom: 0 !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        background: #ffffff !important;
+        color: #111827 !important;
+        padding: 14px 16px !important;
+        border-radius: 14px !important;
+      }
+      .task-card-title {
+        color: #111827 !important;
+        font-weight: 800 !important;
+      }
+      .task-card-store-badge {
+        background: #e0f2fe !important;
+        color: #0369a1 !important;
+        font-weight: 700 !important;
+      }
+      .task-card-city-fmt {
+        color: #4b5563 !important;
+        font-weight: 600 !important;
+      }
+      .task-card-address {
+        color: #374151 !important;
+      }
+      .task-card-address a {
+        color: #0284c7 !important;
+        text-decoration: none !important;
+      }
+      .task-card-info-row {
+        background: #f8fafc !important;
+        border: 1px solid #e2e8f0 !important;
+      }
+      .task-info-label {
+        color: #4b5563 !important;
+        font-weight: 700 !important;
+      }
+      .task-info-val {
+        color: #111827 !important;
+        font-weight: 700 !important;
+      }
+      .task-card-pay-box {
+        background: #f0fdf4 !important;
+        border: 1px solid #86efac !important;
+      }
+      .task-pay-level {
+        color: #374151 !important;
+        font-weight: 600 !important;
+      }
+      .task-pay-level strong {
+        color: #111827 !important;
+      }
+      .task-pay-amount {
+        color: #15803d !important;
+        font-weight: 800 !important;
+      }
+      .task-card-details-item {
+        border-bottom: 1px solid #e2e8f0 !important;
+      }
+      .task-details-label {
+        color: #4b5563 !important;
+      }
+      .task-details-val {
+        color: #111827 !important;
+      }
+    }
+    .special-only {
+      display: none !important;
+    }
+    body.is-special .nav-item.special-only {
+      display: list-item !important;
+    }
+    body.is-special .special-only-flex {
+      display: flex !important;
+    }
+    body.is-special .special-only:not(.tab-pane) {
+      display: block !important;
+    }
+    body.is-special .tab-pane.special-only {
+      display: none !important;
+    }
+    body.is-special .tab-pane.special-only.active {
+      display: block !important;
+    }
+
+    /* ============================================================
+       APPLE LIQUID GLASS GOOGLE LOGIN OVERLAY
+       ============================================================ */
+    /* МАКСИМАЛЬНАЯ БЕЗОПАСНОСТЬ: ДО ПОДТВЕРЖДЕНИЯ АВТОРИЗАЦИИ ВЕСЬ ИНТЕРФЕЙС ПОРТАЛА СКРЫТ */
+    body:not(.is-authenticated) .container-fluid,
+    body:not(.is-authenticated) nav,
+    body:not(.is-authenticated) .navbar,
+    body:not(.is-authenticated) header,
+    body:not(.is-authenticated) footer {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    .portal-login-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 9999999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+      opacity: 1;
+      visibility: visible;
+      background: #08090f; /* Сплошной глубокий фон, исключающий просвечивание */
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .portal-login-overlay.is-hidden {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+    .portal-login-backdrop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #08090f;
+    }
+    [data-theme="light"] .portal-login-backdrop {
+      background: rgba(245, 245, 247, 0.78);
+    }
+    .portal-login-card {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 440px;
+      padding: 42px 32px 30px;
+      box-sizing: border-box;
+      text-align: center;
+      border-radius: 28px;
+      background: var(--glass-card-bg);
+      border: 1px solid var(--glass-card-border);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      animation: loginCardPop 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    [data-theme="light"] .portal-login-card {
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+    }
+    @keyframes loginCardPop {
+      0% { opacity: 0; transform: scale(0.92) translateY(12px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .login-brand-icon {
+      margin-bottom: 20px;
+      display: inline-block;
+    }
+    .login-title {
+      font-size: 1.55rem;
+      font-weight: 700;
+      margin: 0 0 8px;
+      letter-spacing: -0.025em;
+      color: var(--ios-text);
+    }
+    .login-subtitle {
+      font-size: 0.88rem;
+      color: var(--ios-text-secondary);
+      margin: 0 0 26px;
+      line-height: 1.45;
+    }
+    .login-error-alert {
+      background: rgba(255, 59, 48, 0.12);
+      border: 1px solid rgba(255, 59, 48, 0.32);
+      color: #ff453a;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 0.82rem;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+      line-height: 1.35;
+      animation: alertSlide 0.25s ease;
+    }
+    [data-theme="light"] .login-error-alert {
+      color: #d70015;
+    }
+    @keyframes alertSlide {
+      0% { opacity: 0; transform: translateY(-6px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .login-google-btn-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 52px;
+      margin-bottom: 24px;
+    }
+    #g_id_signin_btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 9999px;
+      overflow: hidden;
+      background: transparent;
+      color-scheme: dark;
+    }
+    #g_id_signin_btn iframe {
+      color-scheme: dark !important;
+      border-radius: 9999px !important;
+    }
+    .login-card-footer {
+      border-top: 1px solid var(--ios-separator);
+      padding-top: 18px;
+      margin-top: 6px;
+    }
+    .security-badge {
+      font-size: 0.74rem;
+      font-weight: 500;
+      color: var(--ios-text-muted);
+      letter-spacing: -0.01em;
+    }
+
+    /* ПРОФИЛЬ АВТОРИЗОВАННОГО ПОЛЬЗОВАТЕЛЯ В ШАПКЕ */
+    .portal-user-profile {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--glass-card-bg);
+      border: 1px solid var(--glass-card-border);
+      border-radius: 999px;
+      padding: 4px 6px 4px 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: all 0.2s ease;
+    }
+    .user-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+    .user-initials {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--ios-blue);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .user-info-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      line-height: 1.15;
+    }
+    .user-name {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--ios-text);
+      max-width: 140px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .user-role-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .role-margo { color: #30d158 !important; }
+    .role-shift { color: #0a84ff !important; }
+    .role-viewer { color: var(--ios-text-secondary) !important; }
+    .btn-user-logout {
+      background: rgba(255, 59, 48, 0.1);
+      border: 1px solid rgba(255, 59, 48, 0.25);
+      color: #ff453a;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-user-logout:hover {
+      background: rgba(255, 59, 48, 0.22);
+      border-color: rgba(255, 59, 48, 0.45);
+    }
